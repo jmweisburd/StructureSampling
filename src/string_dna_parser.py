@@ -1,4 +1,5 @@
 from dna_structure import *
+from coords import CartesianCoords
 
 def id_parse(s):
     if s != "_":
@@ -9,7 +10,7 @@ def id_parse(s):
 def coords_parse(s):
     coord_strings = (s[s.find("(")+1:s.find(")")]).split(",")
     coord_list = list(map(lambda x: int(x), coord_strings))
-    return coord_list
+    return CartesianCoords(coord_list[0], coord_list[1], coord_list[2])
 
 def parse_string(dna_string):
     dna_string_split = dna_string.split(";")

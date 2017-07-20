@@ -1,4 +1,4 @@
-import polar_cords as pc
+from coords import *
 import random
 from constants import DS_LENGTH, SS_LENGTH
 
@@ -7,7 +7,7 @@ class DNA_Structure:
         self.joint_list = joint_list
         self.domain_list = domain_list
         #tether_location is in cartesian coordinates (x,y,z)
-        self.tether_location = (cart_coords[0], cart_coords[1], cart_coords[2])
+        self.tether_location = cart_coords
 
     def get_joint_by_id(self, id_to_find):
         joint = None
@@ -31,18 +31,18 @@ class DNA_Structure:
                 j.cart_coords = (self.tether_location)
                 next_domain = self.get_domain_by_id(j.up_domain)
                 radial = next_domain.get_dna_length_nm()
-                new_vector = pc.random_vector_generation_pz(radial)
+                new_vector = random_vector_generation_pz(radial)
                 next_joint = self.get_joint_by_id(next_domain.up_joint)
-                next_joint.cart_coords = pc.add_3d_vectors(j.cart_coords, new_vector)
+                next_joint.cart_coords = add_3d_vectors(j.cart_coords, new_vector)
             else:
                 current_vector = j.cart_coords
                 next_domain = self.get_domain_by_id(j.up_domain)
                 radial = next_domain.get_dna_length_nm()
-                new_vector = pc.random_vector_generation(radial)
-                while (current_vector[2] + new_vector[2]) < 0:
-                    new_vector = pc.random_vector_generation(radial)
+                new_vector = random_vector_generation(radial)
+                while (current_vector.z + new_vector.z) < 0:
+                    new_vector = random_vector_generation(radial)
                 next_joint = self.get_joint_by_id(next_domain.up_joint)
-                next_joint.cart_coords = pc.add_3d_vectors(current_vector, new_vector)
+                next_joint.cart_coords = add_3d_vectors(current_vector, new_vector)
 
     def print_joints(self):
         for j in self.joint_list:
@@ -64,6 +64,22 @@ class DNA_Structure:
         last_j = self.joint_list[len(self.joint_list)-1]
         return last_j.cart_coords
 
+    #Temporary unspecialized function for simple example structures
+    def get_target_coords(self):
+        j1, j2 = self.joint_list[len(self.joint_list)-2], self.joint_list[len(self.joint_list)-1]
+        xm, ym, zm = (j1.cart_coords.x + j2.cart_coords.x)/2, (j1.cart_coords.y + j2.cart_coords.y)/2, (j1.cart_coords.z + j2.cart_coords.z)/2
+        return CartesianCoords(xm, ym, zm)
+
+    def get_joint_z_differences(self):
+        z_diff = []
+        for i in range(0, len(self.joint_list)-1):
+            j = self.joint_list[i]
+            d_next = self.get_domain_by_id(j.up_domain)
+            j_next = self.get_joint_by_id(d_next.up_joint)
+            diff = j_next.cart_coords[2] - j.cart_coords[2]
+            z_diff.append(diff)
+        return z_diff
+
 class Joint:
     def __init__(self, j_id, dd, ud):
         self.id = j_id
@@ -77,7 +93,7 @@ class Domain:
         self.stranded = ds
         self.down_joint = dj
         self.up_joint = up
-        self.length = int(l)
+        self.length = float(l)
 
     def get_dna_length_nm(self):
         if self.stranded == "D":
@@ -85,3 +101,4 @@ class Domain:
         else:
             max_length = self.length*SS_LENGTH
             return random.uniform(0, max_length)
+            return max_length

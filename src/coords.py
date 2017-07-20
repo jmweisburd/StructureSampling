@@ -17,7 +17,7 @@ def polar_to_cartesian(r, polar, azim):
     x = r*math.sin(polar)*math.cos(azim)
     y = r*math.sin(polar)*math.sin(azim)
     z = r*math.cos(polar)
-    return (x,y,z)
+    return CartesianCoords(x,y,z)
 
 def random_vector_generation(radial):
     polar = 0
@@ -27,6 +27,7 @@ def random_vector_generation(radial):
     while (azim==0):
         azim = rand.uniform(0, 2*math.pi)
     return polar_to_cartesian(radial, polar, azim)
+    #return polar_to_cartesian(radial, 0, azim)
 
 #Random Vector Generation with a positive z value
 def random_vector_generation_pz(radial):
@@ -37,9 +38,26 @@ def random_vector_generation_pz(radial):
     while (azim == 0):
         azim = rand.uniform(0,2*math.pi)
     return polar_to_cartesian(radial, polar, azim)
+    #return polar_to_cartesian(radial, 0, azim)
 
+#Adds two CartesianCoords objects together and the CartesianCoords ojbect sum
 def add_3d_vectors(v1, v2):
-    return ((v1[0]+v2[0]), (v1[1] + v2[1]), (v1[2] + v2[2]))
+    return CartesianCoords((v1.x + v2.x), (v1.y+v2.y), (v1.z+v2.z))
+
+#Simple class for representing cartesian coordinates in 3D space
+class CartesianCoords:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __repr__(self):
+        return(str(self.x) + "," + str(self.y) + "," + str(self.z))
+
+#Class for Probability Calculations
+class CartesianVolume:
+    def __init__(self, x, y, z):
+        self.cc = CartesianCoords(x,y,z)
 
 class PolarCoords:
     def __init__(self, r, polar, azim):
