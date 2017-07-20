@@ -48,10 +48,11 @@ for s in shorts:
 t_map = {}
 for key, value in l_map.items():
     if key in s_map:
-        if key not in t_map.keys():
-            t_map[key] = 1
-        else:
-            t_map[key] += 1
+        t_map[key] = s_map[key] + value
+        #if key not in t_map.keys():
+            #t_map[key] = 
+        #else:
+            #t_map[key] += 1
 
 for key, value in t_map.items():
     print(str(key) + ": " + str(value))
