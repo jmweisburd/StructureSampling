@@ -14,7 +14,7 @@ pos_prob = []
 dna1 = dnap.parse_string(s1)
 dna2 = dnap.parse_string(s2)
 
-for y_d in range(0, 35, 5):
+for y_d in range(15, 20, 5):
     print("Simulating Long Structure")
     f = open('long.txt', 'w')
     i = 0
