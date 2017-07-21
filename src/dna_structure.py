@@ -9,6 +9,9 @@ class DNA_Structure:
         #tether_location is in cartesian coordinates (x,y,z)
         self.tether_location = cart_coords
 
+    def move_y_tether(self, y_d):
+        self.tether_location = CartesianCoords(0, y_d, 0)
+
     def get_joint_by_id(self, id_to_find):
         joint = None
         for j in self.joint_list:
