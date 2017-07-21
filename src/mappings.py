@@ -1,4 +1,6 @@
 from coords import *
+import matplotlib.pyplot as plt
+import numpy as np
 
 def myround(x, prec=2, base=0.5):
     return round(base * round(float(x)/base),prec)
@@ -49,10 +51,18 @@ t_map = {}
 for key, value in l_map.items():
     if key in s_map:
         t_map[key] = s_map[key] + value
-        #if key not in t_map.keys():
-            #t_map[key] = 
-        #else:
-            #t_map[key] += 1
 
-for key, value in t_map.items():
-    print(str(key) + ": " + str(value))
+
+long_probs = []
+short_probs = []
+
+for key in t_map.keys():
+    long_probs.append(l_map[key])
+    short_probs.append(s_map[key])
+
+total_prob = 0
+for i in range(len(long_probs)):
+    total_prob += long_probs[i]*short_probs[i]
+
+final_prob = total_prob/(pow(1000000,2))
+print(final_prob)

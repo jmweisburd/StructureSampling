@@ -27,24 +27,3 @@ while i < 1000000:
     f.write(str(cs)+"\n")
     i+= 1
 f.close()
-
-##GRAPHING STUFF###
-
-#first = struct.simulate_structure()
-#xs1, zs1 = struct.get_xs_zs()
-#second = struct.simulate_structure()
-#xs2, zs2 = struct.get_xs_zs()
-#third = struct.simulate_structure()
-#xs3, zs3 = struct.get_xs_zs()
-
-#circle = plt.Circle((0,0), 34, color='black', fill=False)
-#ax = plt.gca()
-#ax.cla()
-
-#ax.set_xlim((-34,34))
-#ax.set_ylim((0,34))
-#ax.plot(xs1,zs1, 'ro-', xs2, zs2, 'bo-', xs3,zs3,'go-')
-#plt.xlabel('x axis (nm)')
-#plt.ylabel('z axis (nm)')
-#ax.add_artist(circle)
-#plt.show()
