@@ -53,7 +53,7 @@ with open("short.txt", "r") as f:
 f.close()
 
 for key in complex_map.keys():
-    if key in self.simple_map.keys():
+    if key in simple_map.keys():
         same_map[key] = complex_map[key].extend(simple_map[key])
 
 yz = []
