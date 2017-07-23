@@ -92,7 +92,7 @@ for b in [0.1, 0.25, 0.5]:
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        cax = ax.imshow(heatmap, extent=extent)
+        cax = ax.imshow(heatmap, interpolation='none', extent=extent)
         ax.set_title(str(yd) + ' distance apart ' + str(b) + 'bins')
         ax.set_ylabel('z (nm)')
         ax.set_xlabel('x (nm)')
