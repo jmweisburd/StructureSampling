@@ -1,6 +1,8 @@
 /venv
 .pyc
 /src/__pycache__
+/data_analysis/__pycache__
 .DS_Store
 /src/data/*
+/data
 *.png

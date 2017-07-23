@@ -1,33 +1,26 @@
 from coords import *
-import matplotlib.pyplot as plt
+from utility import *
 import numpy as np
 
-def myround(x, prec=2, base=0.5):
-    return round(base * round(float(x)/base),prec)
-
-def parse_line(s):
-    split_array = s.split(",")
-    x, y, z = split_array[0], split_array[1], split_array[2]
-    return float(x), float(y), float(z)
-
 class ProbabilityCalculator:
-    def __init__(self):
+    def __init__(self, bin_width):
         self.complex_map = {}
         self.simple_map = {}
         self.same_map = {}
+        self.bw = bin_width
 
-    def fill_in_maps(self):
-        with open("long.txt", "r") as f:
+    def fill_in_maps(self, path1, path2):
+        with open(path1, "r") as f:
             for line in f:
                 x,y,z = parse_line(line)
-                x_round, y_round, z_round = myround(x), myround(y), myround(z)
+                x_round, y_round, z_round = myround(x,2,self.bw), myround(y,2,self.bw), myround(z,2,self.bw)
                 round_coord = CartesianCoords(x_round, y_round, z_round)
                 if round_coord not in self.complex_map.keys():
                     self.complex_map[round_coord] = 1
                 else:
                     self.complex_map[round_coord] += 1
         f.close()
-        with open("short.txt", "r") as f:
+        with open(path2, "r") as f:
             for line in f:
                 x,y,z = parse_line(line)
                 x_round, y_round, z_round = myround(x), myround(y), myround(z)

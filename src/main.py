@@ -1,6 +1,6 @@
 import string_dna_parser as dnap
 import coords
-from mappings import *
+#from mappings import *
 import math
 import matplotlib.pyplot as plt
 import os
@@ -13,8 +13,9 @@ s2 = "(0,0,0);J(0,_,0);D(0,S,0,1,5);J(1,0,1);D(1,S,1,2,5);J(2,1,_)"
 dna1 = dnap.parse_string(s1)
 dna2 = dnap.parse_string(s2)
 
+base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 for y_d in range(0, 35, 5):
-    path = 'data/'+ str(y_d)
+    path = base + '/data/'+ str(y_d)
     if not os.path.exists(path):
         os.makedirs(path)
     file_path = path + "/long.txt"

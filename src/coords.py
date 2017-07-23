@@ -63,23 +63,6 @@ class CartesianCoords:
         z_bool = (self.z == other.z)
         return (x_bool and y_bool and z_bool)
 
-#Class for Probability Calculations
-#Test at 0.5nm blocks
-class CartesianVolume:
-    def __init__(self, x, y, z):
-        self.cc = CartesianCoords(x,y,z)
-
-    def __hash__(self):
-        return hash(self.cc)
-
-    def __eq__(self, other):
-        x_bool = self.cc.x == other.cc.x
-        y_bool = self.cc.y == other.cc.y
-        z_bool = self.cc.z == other.cc.z
-        return (x_bool and y_bool and z_bool)
-
-
-
 class PolarCoords:
     def __init__(self, r, polar, azim):
         self.radial = r
