@@ -88,14 +88,14 @@ for b in [0.1, 0.25, 0.5]:
         short_path = base + "/data/" + str(yd) + "/short.txt"
         ys, zs = fill_maps(long_path, short_path, b)
         y_bins, z_bins = calculate_y_bins(b), calculate_z_bins(b)
-        heatmap, xedges, yedges = np.histogram2d(ys, zs, bins=(y_bins,z_bins))
+        heatmap, xedges, yedges = np.histogram2d(zs, ys, bins=(y_bins,z_bins))
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig = plt.figure()
         ax = fig.add_subplot(111)
         cax = ax.imshow(heatmap, interpolation='none', extent=extent)
         ax.set_title(str(yd) + ' distance apart ' + str(b) + 'bins')
         ax.set_ylabel('z (nm)')
-        ax.set_xlabel('x (nm)')
+        ax.set_xlabel('y (nm)')
         fig.colorbar(cax)
         plt.savefig(str(yd) + "_apart_" + str(b) + "_bins" + ".png")
         #plt.savefig("heatmap.png")
