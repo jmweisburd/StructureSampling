@@ -1,11 +1,9 @@
 import matplotlib
+import os
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-
-
-def myround(x, prec=2, base=0.5):
-    return round(base * round(float(x)/base),prec)
+from utility import *
 
 class CartesianCoords:
     def __init__(self, x, y, z):
@@ -25,71 +23,80 @@ class CartesianCoords:
         z_bool = (self.z == other.z)
         return (x_bool and y_bool and z_bool)
 
-def parse_line(s):
-    split_array = s.split(",")
-    x, y, z = split_array[0], split_array[1], split_array[2]
-    return float(x), float(y), float(z)
+def fill_maps(p1, p2, b):
+    complex_map = {}
+    simple_map = {}
+    same_map = {}
+    with open(p1, "r") as f:
+        for line in f:
+            x,y,z = parse_line(line)
+            exact_coord = CartesianCoords(x,y,z)
+            x_round, y_round, z_round = myround(x,2,b), myround(y,2,b), myround(z,2,b)
+            round_coord = CartesianCoords(x_round, y_round, z_round)
+            if round_coord not in complex_map.keys():
+                complex_map[round_coord] = [exact_coord]
+            else:
+                complex_map[round_coord].append(exact_coord)
+    f.close()
+    with open(p2, "r") as f:
+        for line in f:
+            x,y,z = parse_line(line)
+            exact_coord = CartesianCoords(x,y,z)
+            x_round, y_round, z_round = myround(x,2,b), myround(y,2,b), myround(z,2,b)
+            round_coord = CartesianCoords(x_round, y_round, z_round)
+            if round_coord not in simple_map.keys():
+                simple_map[round_coord] = [exact_coord]
+            else:
+                simple_map[round_coord].append(exact_coord)
+    f.close()
+    ys = []
+    zs = []
+    for key in complex_map.keys():
+        if key in simple_map.keys():
+            l = complex_map[key]
+            s = simple_map[key]
+            for v in l:
+                ys.append(v.y)
+                zs.append(v.z)
+            for v in s:
+                ys.append(v.y)
+                zs.append(v.z)
+    return ys, zs
 
-complex_map = {}
-simple_map = {}
-same_map = {}
+def calculate_y_bins(b):
+    if b == 0.1:
+        return np.arange(0.05,34.05,0.1)
+    elif b == 0.25:
+        return np.arange(0.125,34.125,0.25)
+    else:
+        return np.arange(0.25,34.25, 0.5)
 
-with open("long.txt", "r") as f:
-    for line in f:
-        x,y,z = parse_line(line)
-        exact_coord = CartesianCoords(x,y,z)
-        x_round, y_round, z_round = myround(x), myround(y), myround(z)
-        round_coord = CartesianCoords(x_round, y_round, z_round)
-        if round_coord not in complex_map.keys():
-            complex_map[round_coord] = [exact_coord]
-        else:
-            complex_map[round_coord].append(exact_coord)
-f.close()
+def calculate_z_bins(b):
+    if b == 0.1:
+        return np.arange(-0.05,10.05,0.1)
+    elif b == 0.25:
+        return np.arange(-0.125, 10.125, 0.25)
+    else:
+        return np.arange(-0.25,10.5,0.5)
 
-with open("short.txt", "r") as f:
-    for line in f:
-        x,y,z = parse_line(line)
-        exact_coord = CartesianCoords(x,y,z)
-        x_round, y_round, z_round = myround(x), myround(y), myround(z)
-        round_coord = CartesianCoords(x_round, y_round, z_round)
-        if round_coord not in simple_map.keys():
-            simple_map[round_coord] = [exact_coord]
-        else:
-            simple_map[round_coord].append(exact_coord)
-f.close()
 
-ys = []
-zs = []
 
-for key in complex_map.keys():
-    if key in simple_map.keys():
-        l = complex_map[key]
-        s = simple_map[key]
-        for v in l:
-            ys.append(v.y)
-            zs.append(v.z)
-        for v in s:
-            ys.append(v.y)
-            zs.append(v.z)
-
-#for key in complex_map.keys():
-    #if key in simple_map.keys():
-        #same_map[key] = complex_map[key].extend(simple_map[key])
-
-#yz = []
-#zs = []
-
-#for key, value in same_map.items():
-    #print(key)
-    #for v in value:
-        #print(v)
-    #yz.append(value.y)
-    #zs.append(value.z)
-
-heatmap, xedges, yedges = np.histogram2d(ys, zs, bins=(16,16))
-extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-plt.imshow(heatmap, extent=extent)
-plt.colorbar()
-plt.ylabel('z (nm)')
-plt.xlabel('y (nm)')
-plt.savefig("heatmap.png")
+base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
+for b in [0.1, 0.25, 0.5]:
+    for yd in range(0, 35, 5):
+        long_path = base + "/data/" + str(yd) + "/long.txt"
+        short_path = base + "/data/" + str(yd) + "/short.txt"
+        ys, zs = fill_maps(long_path, short_path, b)
+        y_bins, z_bins = calculate_y_bins(b), calculate_z_bins(b)
+        heatmap, xedges, yedges = np.histogram2d(ys, zs, bins=(y_bins,z_bins))
+        extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        cax = ax.imshow(heatmap, extent=extent)
+        ax.set_title(str(yd) + ' distance apart ' + str(b) + 'bins')
+        ax.set_ylabel('z (nm)')
+        ax.set_xlabel('x (nm)')
+        fig.colorbar(cax)
+        plt.savefig(str(yd) + "_apart_" + str(b) + "_bins" + ".png")
+        #plt.savefig("heatmap.png")
+        plt.close()
