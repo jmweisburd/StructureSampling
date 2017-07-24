@@ -88,8 +88,9 @@ for b in [0.5]:
         long_path = base + "/data/" + str(yd) + "/long.txt"
         short_path = base + "/data/" + str(yd) + "/short.txt"
         ys, zs = fill_maps(long_path, short_path, b)
+        ybins, zbins = calculate_y_bins(b), calculate_z_bins(b)
         fig, ax = plt.subplots(tight_layout=True)
-        hist = ax.hist2d(ys, zs)
+        hist = ax.hist2d(ys, zs, [ybins, zbins])
         ax.set_title(str(yd) + ' distance apart ' + str(b) + 'bins')
         ax.set_ylabel('z (nm)')
         ax.set_xlabel('y (nm)')
