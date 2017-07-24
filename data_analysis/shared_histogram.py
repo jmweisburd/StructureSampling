@@ -69,7 +69,7 @@ def calculate_y_bins(b):
     elif b == 0.25:
         return np.arange(10.125,34.125,0.25)
     else:
-        return np.arange(10.25,34.25, 0.5)
+        return np.arange(-3.25,34.25, 0.5)
 
 def calculate_z_bins(b):
     if b == 0.1:
@@ -77,26 +77,22 @@ def calculate_z_bins(b):
     elif b == 0.25:
         return np.arange(-0.125, 10.125, 0.25)
     else:
-        return np.arange(-0.25,10.5,0.5)
+        return np.arange(-0.25,6.0,0.5)
 
 
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-for b in [0.1, 0.25, 0.5]:
-    for yd in range(15, 20, 5):
+#for b in [0.1, 0.25, 0.5]:
+for b in [0.5]:
+    for yd in range(0, 35, 15):
         long_path = base + "/data/" + str(yd) + "/long.txt"
         short_path = base + "/data/" + str(yd) + "/short.txt"
         ys, zs = fill_maps(long_path, short_path, b)
-        y_bins, z_bins = calculate_y_bins(b), calculate_z_bins(b)
-        heatmap, xedges, yedges = np.histogram2d(zs, ys, bins=128)
-        extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        cax = ax.imshow(heatmap, interpolation='none', extent = extent)
+        fig, ax = plt.subplots(tight_layout=True)
+        hist = ax.hist2d(ys, zs)
         ax.set_title(str(yd) + ' distance apart ' + str(b) + 'bins')
         ax.set_ylabel('z (nm)')
         ax.set_xlabel('y (nm)')
-        fig.colorbar(cax)
+        colorbar(hist[3])
         plt.savefig(str(yd) + "_apart_" + str(b) + "_bins" + ".png")
-        #plt.savefig("heatmap.png")
         plt.close()
