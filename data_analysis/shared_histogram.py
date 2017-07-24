@@ -65,11 +65,11 @@ def fill_maps(p1, p2, b):
 
 def calculate_y_bins(b):
     if b == 0.1:
-        return np.arange(0.05,34.05,0.1)
+        return np.arange(10.05,34.05,0.1)
     elif b == 0.25:
-        return np.arange(0.125,34.125,0.25)
+        return np.arange(10.125,34.125,0.25)
     else:
-        return np.arange(0.25,34.25, 0.5)
+        return np.arange(10.25,34.25, 0.5)
 
 def calculate_z_bins(b):
     if b == 0.1:
@@ -83,7 +83,7 @@ def calculate_z_bins(b):
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 for b in [0.1, 0.25, 0.5]:
-    for yd in range(0, 35, 5):
+    for yd in range(15, 20, 5):
         long_path = base + "/data/" + str(yd) + "/long.txt"
         short_path = base + "/data/" + str(yd) + "/short.txt"
         ys, zs = fill_maps(long_path, short_path, b)
@@ -92,7 +92,7 @@ for b in [0.1, 0.25, 0.5]:
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        cax = ax.imshow(heatmap, interpolation='none', extent=extent)
+        cax = ax.imshow(heatmap, interpolation='none')
         ax.set_title(str(yd) + ' distance apart ' + str(b) + 'bins')
         ax.set_ylabel('z (nm)')
         ax.set_xlabel('y (nm)')
