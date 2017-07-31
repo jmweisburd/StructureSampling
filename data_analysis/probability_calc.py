@@ -7,6 +7,8 @@ class ProbabilityCalculator:
         self.complex_map = {}
         self.simple_map = {}
         self.same_map = {}
+        self.short_coords = []
+        self.long_coords = []
         self.bw = bin_width
 
     def fill_in_maps(self, path1, path2):
@@ -44,4 +46,25 @@ class ProbabilityCalculator:
         total_prob = 0
         for i in range(len(complex_count)):
             total_prob += complex_count[i]*simple_count[i]
+        return(total_prob/(pow(1000000,2)))
+
+    def read_files_into_CC(self, path1, path2):
+        with open(path1,'r') as f:
+            for l in f:
+                x,y,z = parse_line(l)
+                self.long_coords.append(CartesianCoords(x,y,z))
+        f.close()
+        with open(path2,'r') as f:
+            for l in f:
+                x,y,z = parse_line(l)
+                self.short_coords.append(CartesianCoords(x,y,z))
+
+    def calculate_distance_probability(self):
+        total_prob = 0
+        for s in self.short_coords:
+            s_prob = 0
+            for l in self.long_coords:
+                if s.distance(l) <= self.bw:
+                    s_prob += 1
+            total_prob += s_prob
         return(total_prob/(pow(1000000,2)))
