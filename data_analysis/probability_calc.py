@@ -54,17 +54,24 @@ class ProbabilityCalculator:
                 x,y,z = parse_line(l)
                 self.long_coords.append(CartesianCoords(x,y,z))
         f.close()
+        self.long_coords.sort()
         with open(path2,'r') as f:
             for l in f:
                 x,y,z = parse_line(l)
                 self.short_coords.append(CartesianCoords(x,y,z))
+        f.close()
+        self.short_coords.sort()
 
     def calculate_distance_probability(self):
         total_prob = 0
+        #for s in self.short_coords:
+            #s_prob = 0
+            #for l in self.long_coords:
+                #if s.distance(l) <= self.bw:
+                    #s_prob += 1
+            #total_prob += s_prob
+        #return(total_prob/(pow(1000000,2)))
         for s in self.short_coords:
-            s_prob = 0
-            for l in self.long_coords:
-                if s.distance(l) <= self.bw:
-                    s_prob += 1
-            total_prob += s_prob
+            b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
+            total_prob += len(b)
         return(total_prob/(pow(1000000,2)))

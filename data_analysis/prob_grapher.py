@@ -31,6 +31,7 @@ for d in [0.1,0.25,0.5]:
     xs = []
     probs = []
     for yd in range(0,35,5):
+        print("GRAPHING DISTANCE " + str(yd) + " NEAREST N "+ str(d))
         xs.append(yd)
         long_path  = base + "/data/" + str(yd) + "/long.txt"
         short_path = base + "/data/" + str(yd) + "/short.txt"

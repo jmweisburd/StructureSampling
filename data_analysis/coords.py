@@ -15,6 +15,13 @@ class CartesianCoords:
     def __repr__(self):
         return(str(self.x) + "," + str(self.y) + "," + str(self.z))
 
+    def __lt__(self, other):
+        if (self.x != other.x):
+            return self.x < other.x
+        if (self.y != other.y):
+            return self.y < other.y
+        return self.s < other.z
+
     def __hash__(self):
         return hash((self.x, self.y, self.z))
 
