@@ -78,10 +78,10 @@ class ProbabilityCalculator:
                     s_prob += 1
             total_prob += s_prob
         return(total_prob/(pow(10000,2)))
-        for s in self.short_coords:
-            b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
-            total_prob += len(b)
-        return(total_prob/(pow(10000,2)))
+        #for s in self.short_coords:
+            #b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
+            #total_prob += len(b)
+        #return(total_prob/(pow(10000,2)))
 
     #def calculate_distance_probability(self):
         #total_prob = 0
