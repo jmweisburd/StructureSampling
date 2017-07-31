@@ -69,31 +69,31 @@ class ProbabilityCalculator:
         f.close()
         self.short_coords.sort()
 
-#    def calculate_distance_probability(self):
-    #    total_prob = 0
-        #for s in self.short_coords:
-            #s_prob = 0
-            #for l in self.long_coords:
-                #if s.distance(l) <= self.bw:
-                    #s_prob += 1
-            #total_prob += s_prob
-        #return(total_prob/(pow(1000000,2)))
-        #for s in self.short_coords:
-            #b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
-            #total_prob += len(b)
-        #return(total_prob/(pow(1000000,2)))
-
     def calculate_distance_probability(self):
         total_prob = 0
         for s in self.short_coords:
-            x_min,y_min,z_min = s.x - self.bw, s.y-self.bw, s.z-self.bw
-            x_max,y_max,z_max = s.x + self.bw, s.y+self.bw, s.z+self.bw
-            a = list(filter(lambda x: x.x >= x_min and x.x <= x_max, self.long_coords))
-            a = list(filter(lambda x: x.y >= y_min and x.y <= y_max, a))
-            a = list(filter(lambda x: x.z >= z_min and x.z <= z_max, a))
-            b = list(filter(lambda x: s.distance(x) <= self.bw, a))
+            s_prob = 0
+            for l in self.long_coords:
+                if s.distance(l) <= self.bw:
+                    s_prob += 1
+            total_prob += s_prob
+        return(total_prob/(pow(10000,2)))
+        for s in self.short_coords:
+            b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
             total_prob += len(b)
-        return(total_prob/(pow(1000000,2)))
+        return(total_prob/(pow(10000,2)))
+
+    #def calculate_distance_probability(self):
+        #total_prob = 0
+        #for s in self.short_coords:
+            #x_min,y_min,z_min = s.x - self.bw, s.y-self.bw, s.z-self.bw
+            #x_max,y_max,z_max = s.x + self.bw, s.y+self.bw, s.z+self.bw
+            #a = list(filter(lambda x: x.x >= x_min and x.x <= x_max, self.long_coords))
+            #a = list(filter(lambda x: x.y >= y_min and x.y <= y_max, a))
+            #a = list(filter(lambda x: x.z >= z_min and x.z <= z_max, a))
+            #b = list(filter(lambda x: s.distance(x) <= self.bw, a))
+            #total_prob += len(b)
+        #return(total_prob/(pow(1000000,2)))
 
 
     def find_closest(self, a, mn, mx):
