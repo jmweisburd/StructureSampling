@@ -62,8 +62,8 @@ class ProbabilityCalculator:
         f.close()
         self.short_coords.sort()
 
-    def calculate_distance_probability(self):
-        total_prob = 0
+#    def calculate_distance_probability(self):
+    #    total_prob = 0
         #for s in self.short_coords:
             #s_prob = 0
             #for l in self.long_coords:
@@ -71,7 +71,25 @@ class ProbabilityCalculator:
                     #s_prob += 1
             #total_prob += s_prob
         #return(total_prob/(pow(1000000,2)))
+        #for s in self.short_coords:
+            #b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
+            #total_prob += len(b)
+        #return(total_prob/(pow(1000000,2)))
+
+    def calculate_distance_probability(self):
+        total_prob = 0
         for s in self.short_coords:
-            b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
+            x_min,y_min,z_min = s.x - self.bw, s.y-self.bw, s.z-self.bw
+            x_max,y_max,z_max = s.x + self.bw, s.y+self.bw, s.z+self.bw
+            min_point = CartesianCoords(x_min, y_min, z_min)
+            max_point = CartesianCoords(x_max,y_max,z_max)
+            a = self.find_closest(self.long_coords, min_point, max_point)
+            b = list(filter(lambda x: s.distance(x) <= self.bw, a))
             total_prob += len(b)
         return(total_prob/(pow(1000000,2)))
+
+
+    def find_closest(self, a, mn, mx):
+        left_index = np.searchsorted(a,mn)
+        right_index = np.searchsorted(a,mx)
+        return a[left_index:right_index]

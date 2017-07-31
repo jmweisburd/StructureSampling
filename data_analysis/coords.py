@@ -20,7 +20,7 @@ class CartesianCoords:
             return self.x < other.x
         if (self.y != other.y):
             return self.y < other.y
-        return self.s < other.z
+        return self.z < other.z
 
     def __hash__(self):
         return hash((self.x, self.y, self.z))
