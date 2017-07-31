@@ -11,6 +11,13 @@ class ProbabilityCalculator:
         self.long_coords = []
         self.bw = bin_width
 
+        self.s_x = []
+        self.s_y = []
+        self.s_z = []
+        self.l_x = []
+        self.l_y = []
+        self.l_z = []
+
     def fill_in_maps(self, path1, path2):
         with open(path1, "r") as f:
             for line in f:
@@ -81,9 +88,9 @@ class ProbabilityCalculator:
         for s in self.short_coords:
             x_min,y_min,z_min = s.x - self.bw, s.y-self.bw, s.z-self.bw
             x_max,y_max,z_max = s.x + self.bw, s.y+self.bw, s.z+self.bw
-            min_point = CartesianCoords(x_min, y_min, z_min)
-            max_point = CartesianCoords(x_max,y_max,z_max)
-            a = self.find_closest(self.long_coords, min_point, max_point)
+            a = list(filter(lambda x: x.x >= x_min and x.x <= x_max, self.long_coords))
+            a = list(filter(lambda x: x.y >= y_min and x.y <= y_max, a))
+            a = list(filter(lambda x: x.z >= z_min and x.z <= z_max, a))
             b = list(filter(lambda x: s.distance(x) <= self.bw, a))
             total_prob += len(b)
         return(total_prob/(pow(1000000,2)))
