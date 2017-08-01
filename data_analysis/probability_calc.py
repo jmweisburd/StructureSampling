@@ -3,13 +3,14 @@ from utility import *
 import numpy as np
 
 class ProbabilityCalculator:
-    def __init__(self, bin_width):
+    def __init__(self, bin_width, distances):
         self.complex_map = {}
         self.simple_map = {}
         self.same_map = {}
         self.short_coords = []
         self.long_coords = []
         self.bw = bin_width
+        self.distances = distances
 
     def fill_in_maps(self, path1, path2):
         with open(path1, "r") as f:
@@ -64,13 +65,29 @@ class ProbabilityCalculator:
 
     def calculate_distance_probability(self):
         total_prob = 0
+        p_0 = 0
+        p_1 = 0
+        p_2 = 0
         for s in self.short_coords:
             s_prob = 0
             for l in self.long_coords:
-                if s.distance(l) <= self.bw:
-                    s_prob += 1
-            total_prob += s_prob
-        return(total_prob/(pow(10000,2)))
+                dist = s.distance(l)
+                if dist <= self.distances[0]:
+                    p_0 += 1
+                    p_1 += 1
+                    p_2 += 1
+                elif dist <= self.distances[1]:
+                    p_1 += 1
+                    p_2 += 1
+                elif dist <= self.distances[2]:
+                    p_2 += 1
+                else:
+                    pass
+        total_prob = [p_0,p_1,p_2]
+        total_prob = list(map(lambda x: x/(pow(10000,2)), total_prob))
+        return total_prob
+
+
         #for s in self.short_coords:
             #b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
             #total_prob += len(b)
