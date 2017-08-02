@@ -34,7 +34,8 @@ class ProbabilityCalculator:
 
     def calculate_threshold_probability(self):
         total_prob = 0
-        for k,vs in self.short_map.items():
+        for k in self.short_map.keys():
+            vs = self.short_map[k]
             for v in vs:
                 try:
                     thresh_count = len(self.long_map[k])
