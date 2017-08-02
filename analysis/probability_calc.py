@@ -66,6 +66,6 @@ class ProbabilityCalculator:
     def calculate_bin_probability(self):
         total_prob = 0
         for key in self.same_map.keys():
-            total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
-
-        return(total_prob/(pow(1000000,2)))
+            if key in self.long_maps.keys():
+                total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
+        return(total_prob/(pow(10000,2)))

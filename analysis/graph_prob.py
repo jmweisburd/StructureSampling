@@ -20,7 +20,8 @@ for t in [0.1,0.25,0.5]:
         short_path = base + "/data/" + str(yd) + "/short.txt"
         pc = ProbabilityCalculator(t)
         pc.read_files_to_maps(long_path, short_path)
-        probs.append(pc.calculate_threshold_probability())
+        #probs.append(pc.calculate_threshold_probability())
+        probs.append(pc.calculate_bin_probability())
     title = str(t) + "nearest_prob_graph.png"
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -33,4 +34,4 @@ for t in [0.1,0.25,0.5]:
 
 end = time.time()
 print("")
-print("PROCESS TOOK: " end-start)
+print("PROCESS TOOK: " + str(end-start)/60.)
