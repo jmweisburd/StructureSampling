@@ -35,13 +35,15 @@ start = time.time()
 
 long_path  = base + "/data/" + str(10.88) + "/long.txt"
 short_path = base + "/data/" + str(10.88) + "/short.txt"
-pc = ProbabilityCalculator(0.25)
-pc.read_files_to_maps(long_path, short_path)
-bin_prob = pc.calculate_bin_probability()
-thresh_prob = pc.calculate_threshold_probability()
 
-print("BIN PROBABILITY: " + str(bin_prob))
-print("THRES PROBABILITY: " + str(thresh_prob))
+for d in [0.1,0.25,0.5]:
+    print(str(d) + "\n")
+    pc = ProbabilityCalculator(d)
+    pc.read_files_to_maps(long_path, short_path)
+    bin_prob = pc.calculate_bin_probability()
+    thresh_prob = pc.calculate_threshold_probability()
+    print("BIN PROBABILITY: " + str(bin_prob))
+    print("THRESH PROBABILITY: " + str(thresh_prob))
 
 end = time.time()
 print("")
