@@ -48,9 +48,9 @@ class ProbabilityCalculator:
                             l = list(filter(lambda x: v.distance(x) <= self.bw, l))
                             thresh_count += len(l)
                         except KeyError:
-                            thresh_count += 0
+                            pass
                 total_prob += thresh_count
-        return total_prob/(pow(10000,2))
+        return total_prob/(pow(1000000,2))
 
     def generate_surrounding_keys(self, key):
         keys = []
@@ -68,4 +68,4 @@ class ProbabilityCalculator:
         for key in self.short_map.keys():
             if key in self.long_map.keys():
                 total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
-        return(total_prob/(pow(10000,2)))
+        return(total_prob/(pow(1000000,2)))

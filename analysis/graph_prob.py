@@ -19,8 +19,8 @@ for t in [0.1,0.25,0.5]:
         long_path  = base + "/data/" + str(yd) + "/long.txt"
         short_path = base + "/data/" + str(yd) + "/short.txt"
         pc = ProbabilityCalculator(t)
-        #pc.read_files_to_maps(long_path, short_path)
-        probs.append(pc.calculate_threshold_probability())
+        pc.read_files_to_maps(long_path, short_path)
+        #probs.append(pc.calculate_threshold_probability())
         probs.append(pc.calculate_bin_probability())
     title = str(t) + "thresh_prob_graph.png"
     fig = plt.figure()
