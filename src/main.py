@@ -15,7 +15,7 @@ dna2 = dnap.parse_string(s2)
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 y_ds = np.arange(0,35,5.44)
-for y_d in y_ds):
+for y_d in y_ds:
     path = base + '/data/'+ str(y_d)
     if not os.path.exists(path):
         os.makedirs(path)
