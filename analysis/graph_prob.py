@@ -34,4 +34,4 @@ for t in [0.1,0.25,0.5]:
 
 end = time.time()
 print("")
-print("PROCESS TOOK: " + str(end-start)/60.)
+print("PROCESS TOOK: " + str(end-start/60.))
