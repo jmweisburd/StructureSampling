@@ -3,113 +3,69 @@ from utility import *
 import numpy as np
 
 class ProbabilityCalculator:
-    def __init__(self, bin_width, distances):
-        self.complex_map = {}
-        self.simple_map = {}
+    def __init__(self, bin_width):
+        self.long_map = {}
+        self.short_map = {}
         self.same_map = {}
-        self.short_coords = []
-        self.long_coords = []
         self.bw = bin_width
-        self.distances = distances
 
-    def fill_in_maps(self, path1, path2):
+    def read_files_to_maps(self, path1, path2):
         with open(path1, "r") as f:
             for line in f:
                 x,y,z = parse_line(line)
+                exact_coord = CC(x,y,z)
                 x_round, y_round, z_round = myround(x,2,self.bw), myround(y,2,self.bw), myround(z,2,self.bw)
-                round_coord = CartesianCoords(x_round, y_round, z_round)
-                if round_coord not in self.complex_map.keys():
-                    self.complex_map[round_coord] = 1
+                round_coord = CC(x_round, y_round, z_round)
+                if round_coord not in self.long_map.keys():
+                    self.long_map[round_coord] = [exact_coord]
                 else:
-                    self.complex_map[round_coord] += 1
+                    self.long_map[round_coord].append(exact_coord)
         f.close()
         with open(path2, "r") as f:
             for line in f:
                 x,y,z = parse_line(line)
-                x_round, y_round, z_round = myround(x), myround(y), myround(z)
-                round_coord = CartesianCoords(x_round, y_round, z_round)
-                if round_coord not in self.simple_map.keys():
-                    self.simple_map[round_coord] = 1
+                exact_coord = CC(x,y,z)
+                x_round, y_round, z_round = myround(x,2,self.bw), myround(y,2,self.bw), myround(z,2,self.bw)
+                round_coord = CC(x_round, y_round, z_round)
+                if round_coord not in self.short_map.keys():
+                    self.short_map[round_coord] = [exact_coord]
                 else:
-                    self.simple_map[round_coord] += 1
+                    self.short_map[round_coord].append(exact_coord)
 
-        for key in self.complex_map.keys():
-            if key in self.simple_map.keys():
-                self.same_map[key] = 1
+    def calculate_threshold_probability(self):
+        total_prob = 0
+        for k,vs in self.short_map.items():
+            for v in vs:
+                try:
+                    thresh_count = len(self.long_map[k])
+                except KeyError:
+                    thresh_count = 0
+                next_to = self.generate_surrounding_keys(k)
+                for n in next_to:
+                    if n != k:
+                        try:
+                            l = self.long_map[n]
+                            l = list(filter(lambda x: v.distance(x) <= self.bw, l))
+                            thresh_count += len(l)
+                        except KeyError:
+                            thresh_count += 0
+                total_prob += thresh_count
+        return total_prob/(pow(10000,2))
 
-    def calculate_probability(self):
-        complex_count = []
-        simple_count = []
+    def generate_surrounding_keys(self, key):
+        keys = []
+        xs = [key.x-self.bw, key.x, key.x+self.bw]
+        ys = [key.y-self.bw, key.y, key.y+self.bw]
+        zs = [key.z-self.bw, key.z, key.z+self.bw]
+        for x in xs:
+            for y in ys:
+                for z in zs:
+                    keys.append(CC(x,y,z))
+        return keys
+
+    def calculate_bin_probability(self):
+        total_prob = 0
         for key in self.same_map.keys():
-            complex_count.append(self.complex_map[key])
-            simple_count.append(self.simple_map[key])
+            total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
 
-        total_prob = 0
-        for i in range(len(complex_count)):
-            total_prob += complex_count[i]*simple_count[i]
         return(total_prob/(pow(1000000,2)))
-
-    def read_files_into_CC(self, path1, path2):
-        with open(path1,'r') as f:
-            for l in f:
-                x,y,z = parse_line(l)
-                self.long_coords.append(CartesianCoords(x,y,z))
-        f.close()
-        self.long_coords.sort()
-        with open(path2,'r') as f:
-            for l in f:
-                x,y,z = parse_line(l)
-                self.short_coords.append(CartesianCoords(x,y,z))
-        f.close()
-        self.short_coords.sort()
-
-    def calculate_distance_probability(self):
-        total_prob = 0
-        p_0 = 0
-        p_1 = 0
-        p_2 = 0
-        for s in self.short_coords:
-            s_prob = 0
-            for l in self.long_coords:
-                dist = s.distance(l)
-                if dist <= self.distances[0]:
-                    p_0 += 1
-                    p_1 += 1
-                    p_2 += 1
-                elif dist <= self.distances[1]:
-                    p_1 += 1
-                    p_2 += 1
-                elif dist <= self.distances[2]:
-                    p_2 += 1
-                else:
-                    pass
-        total_prob = [p_0,p_1,p_2]
-        total_prob = list(map(lambda x: x/(pow(10000,2)), total_prob))
-        return total_prob
-
-
-        #for s in self.short_coords:
-            #b = list(filter(lambda x: s.distance(x) <= self.bw, self.long_coords))
-            #total_prob += len(b)
-        #return(total_prob/(pow(10000,2)))
-
-    #def calculate_distance_probability(self):
-        #total_prob = 0
-        #for s in self.short_coords:
-            #x_min,y_min,z_min = s.x - self.bw, s.y-self.bw, s.z-self.bw
-            #x_max,y_max,z_max = s.x + self.bw, s.y+self.bw, s.z+self.bw
-            #self.long_coords.sort(key=lambda x: x.x)
-            #a = self.find_closest(self.long_coords, CartesianCoords(x_min,0,0),CartesianCoords(x_max,0,0))
-            #a.sort(key=lambda x: x.y)
-            #a = self.find_closest(a, CartesianCoords(0,y_min,0), CartesianCoords(0,y_max,0))
-            #a.sort(key=lambda x: x.z)
-            #a = self.find_closest(a, CartesianCoords(0,0,z_min), CartesianCoords(0,0,z_max))
-            #b = list(filter(lambda x: s.distance(x) <= self.bw, a))
-            #total_prob += len(b)
-        #return(total_prob/(pow(10000,2)))
-
-
-    def find_closest(self, a, mn, mx):
-        left_index = np.searchsorted(a,mn)
-        right_index = np.searchsorted(a,mx)
-        return a[left_index:right_index]

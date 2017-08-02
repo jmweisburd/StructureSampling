@@ -1,6 +1,6 @@
 import math
 #Simple class for representing cartesian coordinates in 3D space
-class CartesianCoords:
+class CC:
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
