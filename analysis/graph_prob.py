@@ -19,14 +19,14 @@ for t in [0.1,0.25,0.5]:
         long_path  = base + "/data/" + str(yd) + "/long.txt"
         short_path = base + "/data/" + str(yd) + "/short.txt"
         pc = ProbabilityCalculator(t)
-        pc.read_files_to_maps(long_path, short_path)
-        #probs.append(pc.calculate_threshold_probability())
+        #pc.read_files_to_maps(long_path, short_path)
+        probs.append(pc.calculate_threshold_probability())
         probs.append(pc.calculate_bin_probability())
-    title = str(t) + "bin_prob_graph.png"
+    title = str(t) + "thresh_prob_graph.png"
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.set_title('Distance vs. Prob with Bins of ' + str(t) + 'nm')
-    #ax.set_title('Distance vs. Prob of Two Points Within ' + str(t) + ' of Each Other')
+    #ax.set_title('Distance vs. Prob with Bins of ' + str(t) + 'nm')
+    ax.set_title('Distance vs. Prob of Two Points Within ' + str(t) + ' of Each Other')
     ax.plot(xs,probs,'o-')
     ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2e'))
     ax.set_ylabel("Probability")
