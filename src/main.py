@@ -14,7 +14,7 @@ dna1 = dnap.parse_string(s1)
 dna2 = dnap.parse_string(s2)
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-y_ds = np.arange(0,35,5.44)
+y_ds = [5.44,10.88,12.0,13.5,21.76]
 for y_d in y_ds:
     path = base + '/data/'+ str(y_d)
     if not os.path.exists(path):
