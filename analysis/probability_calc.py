@@ -35,22 +35,20 @@ class ProbabilityCalculator:
     def calculate_threshold_probability(self):
         total_prob = 0
         for k in self.short_map.keys():
-            vs = self.short_map[k]
-            for v in vs:
-                try:
+            if k in self.long_map.keys():
+                vs = self.short_map[k]
+                for v in vs:
                     thresh_count = len(self.long_map[k])
-                except KeyError:
-                    thresh_count = 0
-                next_to = self.generate_surrounding_keys(k)
-                for n in next_to:
-                    if n != k:
-                        try:
-                            l = self.long_map[n]
-                            l = list(filter(lambda x: v.distance(x) <= self.bw, l))
-                            thresh_count += len(l)
-                        except KeyError:
-                            pass
-                total_prob += thresh_count
+                    next_to = self.generate_surrounding_keys(k)
+                    for n in next_to:
+                        if n != k:
+                            try:
+                                l = self.long_map[n]
+                                l = list(filter(lambda x: v.distance(x) <= self.bw, l))
+                                thresh_count += len(l)
+                            except KeyError:
+                                pass
+                    total_prob += thresh_count
         return total_prob/(pow(1000000,2))
 
     def generate_surrounding_keys(self, key):
