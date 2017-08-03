@@ -10,40 +10,32 @@ import time
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 yds = np.arange(0,35,5.44)
 start = time.time()
-#for t in [0.1,0.25,0.5]:
-    #xs = []
-    #probs = []
-    #for yd in yds :
-        #print("GRAPHING DISTANCE " + str(yd) + " NEAREST N "+ str(t))
-        #xs.append(yd)
-        #long_path  = base + "/data/" + str(yd) + "/long.txt"
-        #short_path = base + "/data/" + str(yd) + "/short.txt"
-        #pc = ProbabilityCalculator(t)
-        #pc.read_files_to_maps(long_path, short_path)
-        #probs.append(pc.calculate_threshold_probability())
-        #probs.append(pc.calculate_bin_probability())
-    #title = str(t) + "thresh_prob_graph.png"
-    #fig = plt.figure()
-    #ax = fig.add_subplot(111)
-    ##ax.set_title('Distance vs. Prob with Bins of ' + str(t) + 'nm')
-    #ax.set_title('Distance vs. Prob of Two Points Within ' + str(t) + ' of Each Other')
-    #ax.plot(xs,probs,'o-')
-    #ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2e'))
-    #ax.set_ylabel("Probability")
-    #ax.set_xlabel("Distance between tow tethers (nm)")
-    #plt.savefig(title)
-
-long_path  = base + "/data/" + str(5.44) + "/long.txt"
-short_path = base + "/data/" + str(5.44) + "/short.txt"
-
-for d in [0.1,0.25,0.5]:
-    print(str(d) + "\n")
-    pc = ProbabilityCalculator(d)
-    pc.read_files_to_maps(long_path, short_path)
-    bin_prob = pc.calculate_bin_probability()
-    thresh_prob = pc.calculate_threshold_probability()
-    print("BIN PROBABILITY: " + str(bin_prob))
-    print("THRESH PROBABILITY: " + str(thresh_prob))
+y_ds = [5.44,10.88,12.0,13.5,21.76]
+for t in [0.1,0.25,0.5]:
+    print(t)
+    bin_probs = []
+    thresh_probs = []
+    for y_d in y_ds:
+        print(y_d)
+        long_path = base + "/data/" + str(y_d) + "/long.txt"
+        short_path = base + "/data/" + str(y_d) + "/short.txt"
+        pc = ProbabilityCalculator(t)
+        pc.read_files_to_maps(long_path, short_path)
+        bin_probs.append(pc.calculate_bin_probability())
+        thresh_probs.append(pc.calculate_threshold_probability())
+    title = "bin_v_thresh_" + str(t)+"nm.png"
+    fig = plt.figure()
+    ax =  fig.add_subplot(111)
+    bins = ax.plot(y_ds, bin_probs, 'ro-', label ='bin')
+    thresh = ax.plot(y_ds, thresh_probs, 'bo-', label='threshold')
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles, labels)
+    ax.xaxis.set_major_formatter(mtick.FormatStrFormatter('%.2f'))
+    ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2e'))
+    ax.set_ylabel("Probability")
+    ax.set_xlabel("Distance between toeholds (nm)")
+    ax.set_title('Distance vs. Probability. ' + str(t) + ' nm bins/threshold')
+    plt.savefig(title)
 
 end = time.time()
 print("")
