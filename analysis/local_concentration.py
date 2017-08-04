@@ -16,15 +16,19 @@ bin_local = []
 thresh_local = []
 for t in ts:
     print(t)
-    long_path = base + "/data/5mil/" + str(y_d) + "/long.txt"
-    short_path = base + "/data/5mil/" + str(y_d) + "/short.txt"
+    long_path = base + "/data/1mil/" + str(y_d) + "/long.txt"
+    short_path = base + "/data/1mil/" + str(y_d) + "/short.txt"
     pc = ProbabilityCalculator(t)
     pc.read_files_to_maps(long_path, short_path)
+    
     bprob = pc.calculate_bin_probability()
+    print("NUMBER OF BIN BINS: " + str(pc.num_colocating_bins)
     lc = pc.calculate_colocating_volume()*1660577881
     bin_local.append(lc)
     print("BIN " + str(t) + " LC: " + str(lc))
+
     tprob = pc.calculate_threshold_probability()
+    print("NUMBER OF THRESH BINS: " + str(pc.num_colocating_bins)
     lc = pc.calculate_colocating_volume()*1660577881
     thresh_local.append(lc)
     print("THRESH " + str(t) + " LC: " + str(lc))
