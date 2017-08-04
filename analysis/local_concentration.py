@@ -1,5 +1,5 @@
 import os
-from probability_calc import ProbabilityCalculator
+from probability_calc import ProbabilityCalculator, total_area
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -10,6 +10,8 @@ import time
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 start = time.time()
 #y_ds = [5.44,10.88,12.0,13.5,21.76]
+
+colocating_volume = total_area(10.88, 31.94, 7.48)
 y_d = 10.88
 ts = [0.1,0.25,0.5]
 bin_local = []
@@ -20,16 +22,14 @@ for t in ts:
     short_path = base + "/data/1mil/" + str(y_d) + "/short.txt"
     pc = ProbabilityCalculator(t)
     pc.read_files_to_maps(long_path, short_path)
-    
-    bprob = pc.calculate_bin_probability()
-    print("NUMBER OF BIN BINS: " + str(pc.num_colocating_bins)
-    lc = pc.calculate_colocating_volume()*1660577881
+
+    bprob = pc.calculate_bin_probability() / colocating_volume
+    lc = bprob*1660577881
     bin_local.append(lc)
     print("BIN " + str(t) + " LC: " + str(lc))
 
-    tprob = pc.calculate_threshold_probability()
-    print("NUMBER OF THRESH BINS: " + str(pc.num_colocating_bins)
-    lc = pc.calculate_colocating_volume()*1660577881
+    tprob = pc.calculate_threshold_probability() / colocating_volume
+    lc = tprob*1660577881
     thresh_local.append(lc)
     print("THRESH " + str(t) + " LC: " + str(lc))
 

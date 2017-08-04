@@ -1,6 +1,13 @@
 from coords import *
 from utility import *
+import math
 import numpy as np
+
+def total_area(d, R, r):
+    term1 = (R+r-(pow(d,2)))
+    term2 = ((pow(d,2))+(2*d*r)-(3*(pow(r,2))) + (2 * d * R) + (6*r*R) - (3*(pow(R,2))))
+    term3 = (12 * d)
+    return (math.pi * term1 * term2)/2*term3
 
 class ProbabilityCalculator:
     def __init__(self, bin_width):
