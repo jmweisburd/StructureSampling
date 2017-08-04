@@ -8,6 +8,7 @@ class ProbabilityCalculator:
         self.short_map = {}
         self.same_map = {}
         self.bw = bin_width
+        self.num_colocating_bins = 0
 
     def read_files_to_maps(self, path1, path2):
         with open(path1, "r") as f:
@@ -34,6 +35,7 @@ class ProbabilityCalculator:
 
     def calculate_threshold_probability(self):
         total_prob = 0
+        self.num_colocating_bins = 0
         for k in self.short_map.keys():
             if k in self.long_map.keys():
                 vs = self.short_map[k]
@@ -64,7 +66,12 @@ class ProbabilityCalculator:
 
     def calculate_bin_probability(self):
         total_prob = 0
+        self.num_colocating_bins = 0
         for key in self.short_map.keys():
             if key in self.long_map.keys():
+                self.num_colocating_bins += 1
                 total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
         return(total_prob/(pow(1000000,2)))
+
+    def calculate_colocating_volume(self):
+        return (pow(self.bw,3)*self.num_colocating_bins)

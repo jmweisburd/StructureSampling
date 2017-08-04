@@ -8,7 +8,6 @@ import numpy as np
 import time
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-yds = np.arange(0,35,5.44)
 start = time.time()
 y_ds = [5.44,10.88,12.0,13.5,21.76]
 for t in [0.1,0.25,0.5]:
@@ -17,8 +16,8 @@ for t in [0.1,0.25,0.5]:
     thresh_probs = []
     for y_d in y_ds:
         print(y_d)
-        long_path = base + "/data/" + str(y_d) + "/long.txt"
-        short_path = base + "/data/" + str(y_d) + "/short.txt"
+        long_path = base + "/data/5mil/" + str(y_d) + "/long.txt"
+        short_path = base + "/data/5mil" + str(y_d) + "/short.txt"
         pc = ProbabilityCalculator(t)
         pc.read_files_to_maps(long_path, short_path)
         bin_probs.append(pc.calculate_bin_probability())
