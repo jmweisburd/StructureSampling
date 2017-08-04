@@ -16,13 +16,13 @@ dna2 = dnap.parse_string(s2)
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 y_ds = [5.44,10.88,12.0,13.5,21.76]
 for y_d in y_ds:
-    path = base + '/data/'+ str(y_d)
+    path = base + '/data/5mil/' + str(y_d)
     if not os.path.exists(path):
         os.makedirs(path)
     file_path = path + "/long.txt"
     f = open(file_path, 'w')
     i = 0
-    while i < 1000000:
+    while i < 5000000:
         dna1.simulate_structure()
         cs = dna1.get_target_coords()
         f.write(str(cs)+"\n")
@@ -35,7 +35,7 @@ for y_d in y_ds:
     f = open(file_path, 'w')
     i = 0
     print("Simulating Short Structure")
-    while i < 1000000:
+    while i < 5000000:
         dna2.simulate_structure()
         cs = dna2.get_target_coords()
         f.write(str(cs)+"\n")
