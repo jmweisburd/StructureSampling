@@ -38,6 +38,7 @@ class ProbabilityCalculator:
         self.num_colocating_bins = 0
         for k in self.short_map.keys():
             if k in self.long_map.keys():
+                self.num_colocating_bins += 1
                 vs = self.short_map[k]
                 for v in vs:
                     thresh_count = len(self.long_map[k])
@@ -45,6 +46,7 @@ class ProbabilityCalculator:
                     for n in next_to:
                         if n != k:
                             try:
+                                self.num_colocating_bins += 1
                                 l = self.long_map[n]
                                 l = list(filter(lambda x: v.distance(x) <= self.bw, l))
                                 thresh_count += len(l)
