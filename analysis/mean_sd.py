@@ -23,8 +23,8 @@ long_wc = []
 short_wc = []
 for t in types:
     for y in y_ds:
-        long_path = base + "/" + t + "/" + str(y) + "/long.txt"
-        short_path = base + "/" + t + "/" + str(y) + "/short.txt"
+        long_path = base + "/data/" + t + "/" + str(y) + "/long.txt"
+        short_path = base + "/data/" + t + "/" + str(y) + "/short.txt"
         long_location = CC(0,0,0)
         short_location = CC(0,y,0)
         with open(long_path, "r") as f:
