@@ -70,6 +70,7 @@ print("Worm: " + str(short_wc_sd))
 
 save_as = "mean_sd.png"
 fig = plt.figure()
+ax =  fig.add_subplot(111)
 fig.suptitle("Mean Length of Long/Short DNA Structures with Standard Deviation")
 ys = np.array([long_uni_mean, long_wc_mean, short_uni_mean, short_wc_mean])
 xs = np.array([1,2,3,4])
