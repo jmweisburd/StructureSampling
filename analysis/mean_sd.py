@@ -72,11 +72,12 @@ save_as = "mean_sd.png"
 fig = plt.figure()
 fig.suptitle("Mean Length of Long/Short DNA Structures with Standard Deviation")
 ys = np.array([long_uni_mean, long_wc_mean, short_uni_mean, short_wc_mean])
-xs = np.array([0,1,2,3])
+xs = np.array([1,2,3,4])
 e = np.array([long_uni_sd, long_wc_sd, short_uni_sd, long_uni_sd])
 my_xticks = np.array(['Long Uniform', 'Long Worm', 'Short Uniform', 'Short Worm'])
 plt.ylabel('Mean Strucutre Length (nm)')
 plt.xticks(xs, my_xticks)
+ax.set_xlim(0.5,4.5)
 plt.errorbar(xs,ys, e, linestyle='None', marker='^')
 fig.savefig(save_as)
 
