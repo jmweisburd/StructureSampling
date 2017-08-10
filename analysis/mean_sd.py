@@ -7,6 +7,7 @@ import matplotlib.ticker as mtick
 import numpy as np
 import time
 from coords import CC
+from utility import *
 
 
 def cart_coord_from_line(l):
@@ -67,6 +68,17 @@ print("### SD SHORT ###")
 print("Uniform: " + str(short_uni_sd))
 print("Worm: " + str(short_wc_sd))
 
+save_as = "mean_sd.png"
+fig = plt.figure()
+fig.suptitle("Mean Length of Long/Short DNA Structures with Standard Deviation")
+ys = np.array([long_uni_mean, long_wc_mean, short_uni_mean, short_wc_mean])
+xs = np.array([0,1,2,3])
+e = np.array([long_uni_sd, long_wc_sd, short_uni_sd, long_uni_sd])
+my_xticks = np.array(['Long Uniform', 'Long Worm', 'Short Uniform', 'Short Worm'])
+plt.ylabel('Mean Strucutre Length (nm)')
+plt.xticks(xs, my_xticks)
+plt.errorbar(xs,ys, e, linestyle='None', marker='^')
+fig.savefig(save_as)
 
 end = time.time()
 
