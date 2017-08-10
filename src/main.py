@@ -25,7 +25,6 @@ for y_d in y_ds:
     else:
         path = base + '/data/wc/' + str(y_d)
 
-
     if not os.path.exists(path):
         os.makedirs(path)
     file_path = path + "/long.txt"
