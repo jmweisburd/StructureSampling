@@ -8,18 +8,21 @@ import numpy as np
 #R: Radius of sphere 1
 #r: Radius of sphere 2
 def total_area(d, R, r):
-    term1 = (R+r-(pow(d,2)))
+    term1 = pow((R+r-d),2)
     term2 = ((pow(d,2))+(2*d*r)-(3*(pow(r,2))) + (2 * d * R) + (6*r*R) - (3*(pow(R,2))))
     term3 = (12 * d)
     return (math.pi * term1 * term2)/(2*term3)
 
 class ProbabilityCalculator:
-    def __init__(self, bin_width):
+    def __init__(self):
         self.long_map = {}
         self.short_map = {}
         self.same_map = {}
-        self.bw = bin_width
+        self.bw = None
         self.num_colocating_bins = 0
+
+    def set_bw(self, bw):
+        self.bw = bw
 
     def read_files_to_maps(self, path1, path2):
         with open(path1, "r") as f:

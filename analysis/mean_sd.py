@@ -9,7 +9,6 @@ import time
 from coords import CC
 from utility import *
 
-
 def cart_coord_from_line(l):
     x,y,z = parse_line(line)
     return CC(x,y,z)
@@ -74,7 +73,7 @@ ax =  fig.add_subplot(111)
 fig.suptitle("Mean Length of Long/Short DNA Structures with Standard Deviation")
 ys = np.array([long_uni_mean, long_wc_mean, short_uni_mean, short_wc_mean])
 xs = np.array([1,2,3,4])
-e = np.array([long_uni_sd, long_wc_sd, short_uni_sd, short_uni_sd])
+e = np.array([long_uni_sd, long_wc_sd, short_uni_sd, short_worm_sd])
 my_xticks = np.array(['Long Uniform', 'Long Worm', 'Short Uniform', 'Short Worm'])
 plt.ylabel('Mean Strucutre Length (nm)')
 plt.xticks(xs, my_xticks)
