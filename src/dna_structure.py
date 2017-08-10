@@ -2,6 +2,7 @@ from coords import *
 import random
 from constants import DS_LENGTH, SS_LENGTH
 import options
+from wlc import
 
 class DNA_Structure:
     def __init__(self, cart_coords, joint_list, domain_list):
@@ -105,5 +106,7 @@ class Domain:
             return self.length*DS_LENGTH
         else:
             max_length = self.length*SS_LENGTH
-            return random.uniform(0, max_length)
-            return max_length
+            if self.wc:
+                return get_a_wlc_sample(2, max_length)
+            else:
+                return random.uniform(0, max_length)

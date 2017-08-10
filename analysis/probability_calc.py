@@ -3,11 +3,15 @@ from utility import *
 import math
 import numpy as np
 
+#Calculates the area of intersection between two hemispheres
+#d: distance between the center of two spheres
+#R: Radius of sphere 1
+#r: Radius of sphere 2
 def total_area(d, R, r):
     term1 = (R+r-(pow(d,2)))
     term2 = ((pow(d,2))+(2*d*r)-(3*(pow(r,2))) + (2 * d * R) + (6*r*R) - (3*(pow(R,2))))
     term3 = (12 * d)
-    return (math.pi * term1 * term2)/2*term3
+    return (math.pi * term1 * term2)/(2*term3)
 
 class ProbabilityCalculator:
     def __init__(self, bin_width):
