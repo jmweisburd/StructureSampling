@@ -5,12 +5,12 @@ import options
 from wlc import *
 
 class DNA_Structure:
-    def __init__(self, cart_coords, joint_list, domain_list):
+    def __init__(self, cart_coords, joint_list, domain_list, wormlike):
         self.joint_list = joint_list
         self.domain_list = domain_list
         #tether_location is in cartesian coordinates (x,y,z)
         self.tether_location = cart_coords
-        self.worm = False
+        self.worm = wormlike
 
     def move_y_tether(self, y_d):
         self.tether_location = CartesianCoords(0, y_d, 0)

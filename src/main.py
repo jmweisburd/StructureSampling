@@ -13,9 +13,8 @@ s2 = "(0,0,0);J(0,_,0);D(0,S,0,1,5);J(1,0,1);D(1,S,1,2,6);J(2,1,_)"
 
 args = parser.parse_args()
 
-dna1 = dnap.parse_string(s1)
-dna2 = dnap.parse_string(s2)
-dna1.wc, dna2.wc = args.worm, args.worm
+dna1 = dnap.parse_string(s1, args.worm)
+dna2 = dnap.parse_string(s2, args.worm)
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 

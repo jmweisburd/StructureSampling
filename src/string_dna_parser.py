@@ -12,7 +12,7 @@ def coords_parse(s):
     coord_list = list(map(lambda x: int(x), coord_strings))
     return CartesianCoords(coord_list[0], coord_list[1], coord_list[2])
 
-def parse_string(dna_string):
+def parse_string(dna_string, wormlike):
     dna_string_split = dna_string.split(";")
     cart_coords = coords_parse(dna_string_split[0])
     domain_joint_list = dna_string_split[1::]
@@ -28,4 +28,4 @@ def parse_string(dna_string):
             d_id, ds, dj, uj, l = args[0], args[1], args[2], args[3], args[4]
             domains.append(Domain(id_parse(d_id), ds, id_parse(dj), id_parse(uj), l))
 
-    return DNA_Structure(cart_coords, joints, domains)
+    return DNA_Structure(cart_coords, joints, domains, wormlike)
