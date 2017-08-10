@@ -36,14 +36,14 @@ class DNA_Structure:
             if j.id == 0:
                 j.cart_coords = (self.tether_location)
                 next_domain = self.get_domain_by_id(j.up_domain)
-                radial = next_domain.get_dna_length_nm(worm)
+                radial = next_domain.get_dna_length_nm(self.worm)
                 new_vector = random_vector_generation_pz(radial)
                 next_joint = self.get_joint_by_id(next_domain.up_joint)
                 next_joint.cart_coords = add_3d_vectors(j.cart_coords, new_vector)
             else:
                 current_vector = j.cart_coords
                 next_domain = self.get_domain_by_id(j.up_domain)
-                radial = next_domain.get_dna_length_nm(worm)
+                radial = next_domain.get_dna_length_nm(self.worm)
                 new_vector = random_vector_generation(radial)
                 while (current_vector.z + new_vector.z) < 0:
                     new_vector = random_vector_generation(radial)
