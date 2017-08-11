@@ -9,8 +9,7 @@ import time
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 y_ds = [5.44,10.88,12.0,13.5,21.76]
-bins = [0.1,0.25,0.5,0.6,0.7,0.8,0.9,1.0]
-#bins = [0.5]
+bins = [0.25,0.5,0.75,1.0,1.25]
 distr = ['uni', 'wc']
 
 LONG_MAX = 17.68
@@ -40,6 +39,9 @@ with open('out_vol_lc.txt', 'w') as f:
             short_path = base + "/data/" + d + "/" + str(y) + "/short.txt"
 
             for b in bins:
+                print("DISTRIBUTION " + str(d))
+                print("DISTANCE" + str(y))
+                print("BIN SIZE " + str(b))
                 pc = ProbabilityCalculator()
                 pc.set_bw(b)
                 pc.read_files_to_maps(long_path, short_path)
@@ -80,6 +82,5 @@ with open('out_vol_lc.txt', 'w') as f:
                 else:
                     f.write("THRESH LC W/ SPHERE VOL: 0\n")
                 f.write("\n")
-
 
 f.close()
