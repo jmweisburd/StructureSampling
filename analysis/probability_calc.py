@@ -21,6 +21,11 @@ class ProbabilityCalculator:
         self.bw = None
         self.num_colocating_bins = 0
 
+    def reset_maps(self):
+        self.short_map = {}
+        self.long_map = {}
+        self.same_map = {}
+
     def set_bw(self, bw):
         self.bw = bw
 
@@ -49,10 +54,10 @@ class ProbabilityCalculator:
 
     def calculate_threshold_probability(self):
         total_prob = 0
-        self.num_colocating_bins = 0
+        thresh_vol_map = {}
         for k in self.short_map.keys():
             if k in self.long_map.keys():
-                self.num_colocating_bins += 1
+                thresh_vol_map[k] = 1
                 vs = self.short_map[k]
                 for v in vs:
                     thresh_count = len(self.long_map[k])
@@ -60,13 +65,14 @@ class ProbabilityCalculator:
                     for n in next_to:
                         if n != k:
                             try:
-                                self.num_colocating_bins += 1
                                 l = self.long_map[n]
                                 l = list(filter(lambda x: v.distance(x) <= self.bw, l))
                                 thresh_count += len(l)
+                                thresh_vol_map[n] = 1
                             except KeyError:
                                 pass
                     total_prob += thresh_count
+        self.num_colocating_bins = len(thresh_vol_map.keys())
         return total_prob/(pow(1000000,2))
 
     def generate_surrounding_keys(self, key):

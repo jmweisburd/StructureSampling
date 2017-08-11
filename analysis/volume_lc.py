@@ -8,7 +8,8 @@ import numpy as np
 import time
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-y_ds = [5.44,10.88,12.0,13.5,21.76]
+#y_ds = [5.44,10.88,12.0,13.5,21.76]
+y_ds = [10.88]
 bins = [0.25,0.5,0.75,1.0,1.25]
 distr = ['uni', 'wc']
 
