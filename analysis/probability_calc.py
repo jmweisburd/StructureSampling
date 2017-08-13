@@ -96,6 +96,7 @@ class ProbabilityCalculator:
                 same.extend(self.short_map[key])
                 colocating_bins += 1
         print("NUMBER OF SHARED BINS: " + str(colocating_bins))
+        print("VOL OF SHARED BINS: " + str(colocating_bins*pow(self.bw, 3)))
         len_s = (len(same)-1)
         same = sorted(same, key=lambda b: b.x)
         x_min, x_max = same[0].x, same[len_s].x
