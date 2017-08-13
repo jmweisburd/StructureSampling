@@ -92,7 +92,7 @@ class ProbabilityCalculator:
         same = []
         for key in self.short_map.keys():
             if key in self.long_map.keys():
-                same.extend(short_map[key])
+                same.extend(self.short_map[key])
         print("TOTAL OVERLAPPING BINS: " + str(len(same)))
         len_s = (len(same)-1)
         same = sorted(same, key=lambda b: b.x)
