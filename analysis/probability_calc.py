@@ -3,16 +3,6 @@ from utility import *
 import math
 import numpy as np
 
-#Calculates the area of intersection between two hemispheres
-#d: distance between the center of two spheres
-#R: Radius of sphere 1
-#r: Radius of sphere 2
-def total_area(d, R, r):
-    term1 = pow((R+r-d),2)
-    term2 = ((pow(d,2))+(2*d*r)-(3*(pow(r,2))) + (2 * d * R) + (6*r*R) - (3*(pow(R,2))))
-    term3 = (12 * d)
-    return (math.pi * term1 * term2)/(2*term3)
-
 class ProbabilityCalculator:
     def __init__(self):
         self.long_map = {}
@@ -97,3 +87,30 @@ class ProbabilityCalculator:
 
     def calculate_colocating_volume(self):
         return (pow(self.bw,3)*self.num_colocating_bins)
+
+    def volume_estimate(self):
+        same = []
+        for key in self.short_map.keys():
+            if key in self.long_map.keys():
+                same.extend(short_map[key])
+        print("TOTAL OVERLAPPING BINS: " + str(len(same)))
+        len_s = (len(same)-1)
+        same = sorted(same, key=lambda b: b.x)
+        x_min, x_max = same[0].x, same[len_s].x
+        same = sorted(same, key=lambda b: b.y)
+        y_min, y_max = same[0].y, same[len_s].y
+        same = sorted(same, key=lambda b: b.z)
+        z_min, z_max = same[0].z, same[len_s].z
+
+        print("X MIN: " + str(x_min))
+        print("X MAX: " + str(x_max))
+        print("Y MIN: " + str(y_min))
+        print("Y MAX: " + str(y_max))
+        print("Z MIN: " + str(z_min))
+        print("Z MAX: " + str(z_max))
+
+        x_diff = x_max - x_min
+        y_diff = y_max - y_min
+        z_diff = z_max - z_min
+
+        return (x_diff * y_diff * z_diff)

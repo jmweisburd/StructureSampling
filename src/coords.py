@@ -27,8 +27,7 @@ def random_vector_generation(radial):
     while (azim==0):
         azim = rand.uniform(0, 2*math.pi)
     return polar_to_cartesian(radial, polar, azim)
-    #return polar_to_cartesian(radial, 0, azim)
-
+    
 #Random Vector Generation with a positive z value
 def random_vector_generation_pz(radial):
     polar = 0

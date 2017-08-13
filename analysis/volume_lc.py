@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 import time
+from utility import total_area
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 #y_ds = [5.44,10.88,12.0,13.5,21.76]
@@ -27,11 +28,11 @@ with open('out_vol_lc.txt', 'w') as f:
             f.write("### TOEHOLD DISTANCE " + str(y) + " nm ###\n")
             f.write("\n")
             if y <= L_S_DIFF:
-                sphere_vol = total_area(L_S_DIFF, LONG_MAX, SHORT_MAX)
+                sphere_vol = inter_vol(L_S_DIFF, LONG_MAX, SHORT_MAX)
             elif y >= L_S_SUM:
                 sphere_vol = 0
             else:
-                sphere_vol = total_area(y, LONG_MAX, SHORT_MAX)
+                sphere_vol = inter_vol(y, LONG_MAX, SHORT_MAX)
 
             f.write("OVERLAPPING SPHERE VOLUME: " + str(sphere_vol) + "\n")
             f.write("\n")
