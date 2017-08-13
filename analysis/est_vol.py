@@ -12,5 +12,13 @@ pc.set_bw(0.5)
 pc.read_files_to_maps(long_path, short_path)
 
 vol = pc.volume_estimate()
-print("")
-print("VOLUME ESTIMATE: " + str(vol))
+
+for b in [0.25,0.5,0.7,1.0,1.25]:
+    pc = ProbabilityCalculator()
+    pc.set_bw(b)
+    pc.read_files_to_maps(long_path, short_path)
+    print("")
+    print(str(b) + " nm BIN WIDTH")
+    print("")
+    vol = pc.volume_estimate()
+    print("VOLUME ESTIMATE" + str(vol))

@@ -90,10 +90,12 @@ class ProbabilityCalculator:
 
     def volume_estimate(self):
         same = []
+        colocating_bins = 0
         for key in self.short_map.keys():
             if key in self.long_map.keys():
                 same.extend(self.short_map[key])
-        print("TOTAL OVERLAPPING BINS: " + str(len(same)))
+                colocating_bins += 1
+        print("NUMBER OF SHARED BINS: " + str(colocating_bins))
         len_s = (len(same)-1)
         same = sorted(same, key=lambda b: b.x)
         x_min, x_max = same[0].x, same[len_s].x
