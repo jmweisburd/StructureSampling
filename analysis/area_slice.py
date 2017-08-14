@@ -4,7 +4,7 @@ from coords import *
 from probability_calc import ProbabilityCalculator
 
 #dist = ['uni', 'worm']
-dist = ['worm']
+dist = ['wc']
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 for d in dist:
