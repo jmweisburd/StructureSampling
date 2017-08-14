@@ -126,10 +126,6 @@ class ProbabilityCalculator:
         z_min = all_points[0]
         return z_min, z_max
 
-
-
-
-
     def volume_estimate(self):
         same = []
         colocating_bins = 0

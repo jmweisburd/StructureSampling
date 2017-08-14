@@ -1,4 +1,10 @@
 import os
+from probability_calc import ProbabilityCalculator
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+import numpy as np
 from utility import inter_vol
 from coords import *
 from probability_calc import ProbabilityCalculator
@@ -7,6 +13,8 @@ from probability_calc import ProbabilityCalculator
 dist = ['wc']
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
+worm_points = []
+uni_points = []
 for d in dist:
     long_path = base + "/data/" + d + "/10.88" + "/long.txt"
     short_path = base + "/data/" + d + "/10.88" + "/short.txt"
@@ -14,9 +22,25 @@ for d in dist:
     pc.set_bw(0.5)
     pc.read_files_to_maps(long_path, short_path)
     mins, maxs = pc.area_slice()
-    print("MINS")
-    for m in mins:
-        print(m)
-    print("MAXS")
-    for m in maxs:
-        print(m)
+    maxs = list(reversed(maxs))
+    mins.extend(maxs)
+    mins.append(mins[0])
+    if d == 'wc':
+        worm_points = mins
+    else:
+        uni_points = mins
+
+worm_points_x = list(filter(lambda k: k.y, worm_points))
+worm_points_y = list(filter(lambda k: k.z, worm_points))
+uni_points_x = list(filter(lambda k: k.y, uni_points))
+uni_points_y = list(filter(lambda k: k.z, uni_points))
+
+fig = plt.figure()
+ax =  fig.add_subplot(111)
+worm_vol = ax.scatter(worm_points_x, worm_points_y, 'ro-', label = 'worm-chain')
+uni_vol = ax.scatter(uni_points_x, uni_points_y, 'bo-', label='ideal-chain')
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(handles, labels)
+ax.set_ylabel("z position (nm)")
+ax.set_xlabel("y position (nm)")
+plt.savefig("area_slice.png")
