@@ -9,8 +9,8 @@ from utility import inter_vol
 from coords import *
 from probability_calc import ProbabilityCalculator
 
-#dist = ['uni', 'worm']
-dist = ['wc']
+dist = ['uni', 'worm']
+#dist = ['wc']
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 worm_points = []
@@ -40,7 +40,7 @@ ax =  fig.add_subplot(111)
 ax.scatter(worm_points_x, worm_points_y, c = 'r')
 worm_vol = ax.plot(worm_points_x, worm_points_y, 'r', label = 'worm-chain')
 ax.scatter(uni_points_x, uni_points_y, c = 'b')
-uni_vol = ax.plot(uni_points_x, uni_points_y, 'r', label = 'ideal-chain')
+uni_vol = ax.plot(uni_points_x, uni_points_y, 'b', label = 'ideal-chain')
 handles, labels = ax.get_legend_handles_labels()
 ax.legend(handles, labels)
 ax.set_ylabel("z position (nm)")
