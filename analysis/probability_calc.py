@@ -88,6 +88,48 @@ class ProbabilityCalculator:
     def calculate_colocating_volume(self):
         return (pow(self.bw,3)*self.num_colocating_bins)
 
+    def area_slice(self):
+        common_keys = []
+        for key in self.short_map.keys():
+            if key in self.long_map.keys():
+                common_keys.append(key)
+        x_slice = list(filter(lambda k: k.x == 0, common_keys))
+        x_slice = sorted(x_slice, key=lambda k: k.y)
+        y_min = x_slice[0].y
+        y_max = x_slice[-1].y
+        curr = y_min
+        mins = []
+        maxs = []
+        while curr <= y_max:
+            key_list = []
+            y_slice = list(filter(lambda k: k.y == curr, x_slice))
+            y_slice = sorted(y_slice, key=lambda k: k.z)
+            key_list.append(y_slice[0])
+            key_list.append(y_slice[-1])
+            z_min, z_max = self.get_points(key_list)
+            mins.append(z_min)
+            mins.append(z_max)
+            curr += self.bw
+        return mins, maxs
+
+    def get_points(self, key_list):
+        z_min = None
+        z_max = None
+        all_points = []
+        for k in key_list:
+            short_list = self.short_map[k]
+            long_list = self.long_map[k]
+            all_points.extend(short_list)
+            all_points.extend(long_list)
+        all_points = sorted(all_points, key=lambda k: k.z)
+        z_max = all_points[-1]
+        z_min = all_points[0]
+        return z_min, z_max
+
+
+
+
+
     def volume_estimate(self):
         same = []
         colocating_bins = 0
