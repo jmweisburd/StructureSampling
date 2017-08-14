@@ -30,10 +30,10 @@ for d in dist:
     else:
         uni_points = mins
 
-worm_points_x = list(filter(lambda k: k.y, worm_points))
-worm_points_y = list(filter(lambda k: k.z, worm_points))
-uni_points_x = list(filter(lambda k: k.y, uni_points))
-uni_points_y = list(filter(lambda k: k.z, uni_points))
+worm_points_x = list(map(lambda k: k.y, worm_points))
+worm_points_y = list(map(lambda k: k.z, worm_points))
+uni_points_x = list(map(lambda k: k.y, uni_points))
+uni_points_y = list(map(lambda k: k.z, uni_points))
 
 fig = plt.figure()
 ax =  fig.add_subplot(111)
