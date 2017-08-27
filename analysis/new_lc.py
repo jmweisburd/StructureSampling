@@ -1,7 +1,6 @@
 import os
 import math
 from probability_calc import ProbabilityCalculator
-from utility import total_area
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 #y_ds = [5.44,10.88,12.0,13.5,21.76]
