@@ -83,7 +83,7 @@ class ProbabilityCalculator:
                 vs = self.short_map[k]
                 for v in vs:
                     thresh_count = len(self.long_map[k])
-                    for n in self.generate_surround_keys(k):
+                    for n in self.generate_surrounding_keys(k):
                         if n != k:
                             try:
                                 l = self.long_map[n]
