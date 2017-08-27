@@ -76,6 +76,28 @@ class ProbabilityCalculator:
                     keys.append(CC(x,y,z))
         return keys
 
+    def new_local_conc(self):
+        local_concs = []
+        for k in self.short_map.keys():
+            if k in self.long_map.keys():
+                vs = self.short_map[k]
+                for v in vs:
+                    thresh_count = len(self.long_map[k])
+                    for n in self.generate_surround_keys(k):
+                        if n != k:
+                            try:
+                                l = self.long_map[n]
+                                l = list(filter(lambda x: v.distance(x) <= self.bw, l))
+                                thresh_count += len(l)
+                                prob = (thresh_count / 1000000)
+                                lc = (prob / ((4/3) * math.pi * pow(self.bw, 3)))
+                                lc = lc * 1660577881
+                                local_concs.append(lc)
+                            except KeyError:
+                                pass
+        total_lc = sum(local_concs)/len(local_concs)
+        return total_lc
+
     def calculate_bin_probability(self):
         total_prob = 0
         self.num_colocating_bins = 0
@@ -84,6 +106,7 @@ class ProbabilityCalculator:
                 self.num_colocating_bins += 1
                 total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
         return(total_prob/(pow(1000000,2)))
+
 
     def calculate_colocating_volume(self):
         return (pow(self.bw,3)*self.num_colocating_bins)
