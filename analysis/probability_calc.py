@@ -85,7 +85,7 @@ class ProbabilityCalculator:
             long_point_list = []
             for b in surrounding_keys:
                 try:
-                    long_point_list.append(self.long_map[b])
+                    long_point_list.extend(self.long_map[b])
                 except KeyError:
                     pass
             for v in vs:
