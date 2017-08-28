@@ -102,7 +102,6 @@ class ProbabilityCalculator:
     def plot_lc(self):
         local_concs = []
         points = []
-        i = 0
 
         for k in self.short_map.keys():
             if k in self.long_map.keys():
@@ -122,9 +121,9 @@ class ProbabilityCalculator:
                     lc = (prob / ((4/3) * math.pi * pow(self.bw, 3)))
                     lc = lc * 1660577881
                     local_concs.append(lc)
-                    
-        local_concs = local_concs[:10000]
-        points = points[:10000]
+
+        #local_concs = local_concs[:10000]
+        #points = points[:10000]
         return list(zip(points, local_concs))
 
     def calculate_bin_probability(self):
