@@ -103,25 +103,28 @@ class ProbabilityCalculator:
         local_concs = []
         points = []
         i = 0
-        while i < 10000:
-            for k in self.short_map.keys():
-                if k in self.long_map.keys():
-                    vs = self.short_map[k]
-                    for v in vs:
-                        points.append(v)
-                        thresh_count = len(self.long_map[k])
-                        for n in self.generate_surrounding_keys(k):
-                            if n != k:
-                                try:
-                                    l = self.long_map[n]
-                                    l = list(filter(lambda x: v.distance(x) <= self.bw, l))
-                                    thresh_count += len(l)
-                                except KeyError:
-                                    pass
-                        prob = (thresh_count / 1000000)
-                        lc = (prob / ((4/3) * math.pi * pow(self.bw, 3)))
-                        lc = lc * 1660577881
-                        local_concs.append(lc)
+
+        for k in self.short_map.keys():
+            if k in self.long_map.keys():
+                vs = self.short_map[k]
+                for v in vs:
+                    points.append(v)
+                    thresh_count = len(self.long_map[k])
+                    for n in self.generate_surrounding_keys(k):
+                        if n != k:
+                            try:
+                                l = self.long_map[n]
+                                l = list(filter(lambda x: v.distance(x) <= self.bw, l))
+                                thresh_count += len(l)
+                            except KeyError:
+                                pass
+                    prob = (thresh_count / 1000000)
+                    lc = (prob / ((4/3) * math.pi * pow(self.bw, 3)))
+                    lc = lc * 1660577881
+                    local_concs.append(lc)
+                    
+        local_concs = local_concs[:10000]
+        points = points[:10000]
         return list(zip(points, local_concs))
 
     def calculate_bin_probability(self):

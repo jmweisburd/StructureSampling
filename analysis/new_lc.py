@@ -5,7 +5,8 @@ from probability_calc import ProbabilityCalculator
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 #y_ds = [5.44,10.88,12.0,13.5,21.76]
 y_ds = [10.88]
-bins = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0]
+#bins = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0]
+bins = [0.5,1.0,1.5,2.0]
 distr = ['uni', 'wc']
 
 with open('fixed_lc.txt', 'w') as f:
