@@ -8,7 +8,7 @@ y_ds = [10.88]
 bins = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0]
 distr = ['uni', 'wc']
 
-with open('new_lc.txt', 'w') as f:
+with open('fixed_lc.txt', 'w') as f:
     for d in distr:
         f.write("### " + d + " ###\n")
         f.write("\n")
