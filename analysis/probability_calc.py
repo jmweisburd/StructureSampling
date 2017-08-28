@@ -78,27 +78,27 @@ class ProbabilityCalculator:
 
     def new_local_conc(self):
         local_concs = []
+        r_vol = (4/3) * (math.pi) * (pow(self.bw, 3))
         for k in self.short_map.keys():
-            if k in self.long_map.keys():
-                vs = self.short_map[k]
-                for v in vs:
-                    thresh_count = len(self.long_map[k])
-                    for n in self.generate_surrounding_keys(k):
-                        if n != k:
-                            try:
-                                l = self.long_map[n]
-                                l = list(filter(lambda x: v.distance(x) <= self.bw, l))
-                                thresh_count += len(l)
-                            except KeyError:
-                                pass
-                    prob = (thresh_count / 1000000)
-                    lc = (prob / ((4/3) * math.pi * pow(self.bw, 3)))
-                    lc = lc * 1660577881
-                    local_concs.append(lc)
+            vs = self.short_map[k]
+            surrounding_keys = self.generate_surrounding_keys(k)
+            long_point_list = []
+            for b in surrounding_keys:
+                try:
+                    long_point_list.append(self.long_map[b])
+                except KeyError:
+                    pass
+            for v in vs:
+                l = list(filter(lambda x: v.distance(x) <= self.bw, long_point_list))
+                thresh_count = len(l)
+                prob = (thresh_count) / 1000000
+                lc = prob / r_vol
+                lc = lc * 1660577881
+                local_concs.append(lc)
 
-        
+        print("NUMBER OF LCs: " + str(len(local_concs)))
         total_lc = sum(local_concs)/1000000
-        print(str(total_lc))
+        print("TOTAL LC: " + str(total_lc))
         return total_lc
 
     def plot_lc(self):
