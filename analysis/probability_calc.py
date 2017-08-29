@@ -96,9 +96,7 @@ class ProbabilityCalculator:
                 lc = lc * 1660577881
                 local_concs.append(lc)
 
-        print("NUMBER OF LCs: " + str(len(local_concs)))
-        total_lc = sum(local_concs)/1000000
-        print("TOTAL LC: " + str(total_lc))
+        total_lc = sum(local_concs)/len(local_concs)
         return total_lc
 
     def plot_lc(self):
