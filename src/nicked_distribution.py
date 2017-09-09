@@ -1,12 +1,23 @@
-import pandas as pd
+#import pandas as pd
 import numpy as np
 from scipy.stats import gaussian_kde
 
 def read_angles():
-    colnames = ['tethered','deleted']
-    data = pd.read_csv('angles.tsv', sep='\t', header=0, names=colnames)
-    angles = data.tethered.tolist()
+    angles = []
+    with open('angles.txv') as f:
+        for line in f:
+            data = line.split("\t")
+            angles.append(data[0])
+    angles = angles[1:]
     return np.array(angles)
+
+
+#pandas unfortunately is not on the CS machines
+#def read_angles():
+    #colnames = ['tethered','deleted']
+    #data = pd.read_csv('angles.tsv', sep='\t', header=0, names=colnames)
+    #angles = data.tethered.tolist()
+    #return np.array(angles)
 
 class NickedDistribution:
     def __init__(self):
