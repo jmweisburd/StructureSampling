@@ -5,6 +5,7 @@ from scipy.stats import gaussian_kde
 def read_angles():
     angles = []
     with open('angles.tsv') as f:
+        next(f)
         for line in f:
             data = line.split("\t")
             angles.append(float(data[0]))

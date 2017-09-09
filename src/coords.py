@@ -29,7 +29,6 @@ def random_vector(radial):
     return polar_to_cartesian(radial, polar, azim)
 
 def random_vector_nicked_dist(radial, ang_in_degrees):
-    print(ang_in_degrees)
     polar = math.radians(ang_in_degrees)
     azim = 0
     while (azim==0):
