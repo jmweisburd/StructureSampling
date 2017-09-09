@@ -4,10 +4,10 @@ from scipy.stats import gaussian_kde
 
 def read_angles():
     angles = []
-    with open('angles.txv') as f:
+    with open('angles.tsv') as f:
         for line in f:
             data = line.split("\t")
-            angles.append(data[0])
+            angles.append(float(data[0]))
     angles = angles[1:]
     return np.array(angles)
 
