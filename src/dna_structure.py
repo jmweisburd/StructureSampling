@@ -3,14 +3,18 @@ import random
 from constants import DS_LENGTH, SS_LENGTH
 import options
 from wlc import *
+from nicked_distribution import *
 
 class DNA_Structure:
-    def __init__(self, cart_coords, joint_list, domain_list, wormlike):
+    def __init__(self, cart_coords, joint_list, domain_list, wormlike, nicked):
         self.joint_list = joint_list
         self.domain_list = domain_list
         #tether_location is in cartesian coordinates (x,y,z)
         self.tether_location = cart_coords
         self.worm = wormlike
+        self.nicked = nicked
+        if nicked:
+            self.nd = NickedDistribution()
 
     #Moves the toe-hold of the tether along the y-axis
     #y_d: distance (in nm) to move the toe-hold
@@ -44,21 +48,32 @@ class DNA_Structure:
                 j.cart_coords = (self.tether_location)
                 next_domain = self.get_domain_by_id(j.up_domain)
                 radial = next_domain.get_dna_length_nm(self.worm)
-                new_vector = random_vector_generation_pz(radial)
+                new_vector = random_vector_pz(radial)
                 next_joint = self.get_joint_by_id(next_domain.up_joint)
                 next_joint.cart_coords = add_3d_vectors(j.cart_coords, new_vector)
             else:
                 current_vector = j.cart_coords
                 next_domain = self.get_domain_by_id(j.up_domain)
                 radial = next_domain.get_dna_length_nm(self.worm)
-                new_vector = random_vector_generation(radial)
+                last_domain = self.get_domain_by_id(j.down_domain)
+                both_ds = (next_domain.stranded == "D") and (last_domain.stranded == "D")
+                new_vector = self.vector_generator(radial=radial,both_ds=both_ds)
                 while (current_vector.z + new_vector.z) < 0:
-                    new_vector = random_vector_generation(radial)
+                    new_vector = self.vector_generator(radial=radial,both_ds=both_ds)
                 next_joint = self.get_joint_by_id(next_domain.up_joint)
                 next_joint.cart_coords = add_3d_vectors(current_vector, new_vector)
 
-    #Gets the last joint in the DNA structures
+    def vector_generator(self, **kwargs):
+        radial = kwargs["radial"]
+        both_ds = kwargs["both_ds"]
+        if self.nicked and both_ds:
+            ang = self.nd.generate_rand_from_pdf()
+            new_vector = random_vector_nicked_dist(radial, ang)
+        else:
+            new_vector = random_vector(radial)
+        return new_vector
 
+    #Gets the last joint in the DNA structures
     def get_last_joint_coords(self):
         last_j = self.joint_list[len(self.joint_list)-1]
         return last_j.cart_coords

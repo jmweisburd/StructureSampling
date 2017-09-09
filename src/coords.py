@@ -19,7 +19,7 @@ def polar_to_cartesian(r, polar, azim):
     z = r*math.cos(polar)
     return CartesianCoords(x,y,z)
 
-def random_vector_generation(radial):
+def random_vector(radial):
     polar = 0
     azim = 0
     while (polar==0):
@@ -27,9 +27,17 @@ def random_vector_generation(radial):
     while (azim==0):
         azim = rand.uniform(0, 2*math.pi)
     return polar_to_cartesian(radial, polar, azim)
-    
-#Random Vector Generation with a positive z value
-def random_vector_generation_pz(radial):
+
+def random_vector_nicked_dist(radial, ang_in_degrees):
+    print(ang_in_degrees)
+    polar = math.radians(ang_in_degrees)
+    azim = 0
+    while (azim==0):
+        azim = rand.uniform(0, 2*math.pi)
+    return polar_to_cartesian(radial, polar, azim)
+
+#Generate random vector with a positive z value
+def random_vector_pz(radial):
     polar = 0
     azim = 0
     while (polar == 0):
