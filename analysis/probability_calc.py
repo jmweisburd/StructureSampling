@@ -152,7 +152,7 @@ class ProbabilityCalculator:
         maxs = []
         while curr <= y_max:
             key_list = []
-            y_slice = list(filter lambda k: k.y == curr, x_slice))
+            y_slice = list(filter(lambda k: k.y == curr, x_slice))
             y_slice = sorted(y_slice, key=lambda k: k.z)
             key_list.append(y_slice[0])
             key_list.append(y_slice[-1])

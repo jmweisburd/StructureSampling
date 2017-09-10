@@ -4,6 +4,7 @@
 #
 # NB: for single-stranded DNA, we use persistance length s = 2 nm = 2e-9 m
 #
+# Written by Matt Lakin
 ##########################################################################################
 
 import math
