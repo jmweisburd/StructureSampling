@@ -22,7 +22,7 @@ for d in dist:
     pc = ProbabilityCalculator()
     pc.set_bw(0.5)
     pc.read_files_to_maps(long_path, short_path)
-    mins, maxs = pc.area_slice()
+    mins, maxs = pc.area_slice_long()
     maxs = list(reversed(maxs))
     mins.extend(maxs)
     mins.append(mins[0])
