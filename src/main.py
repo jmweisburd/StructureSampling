@@ -3,6 +3,7 @@ import coords
 import numpy as np
 import math
 import os
+from nicked_distribution import NickedDistribution
 from options import *
 
 #J(id, down_domain, up_domain)
@@ -25,6 +26,11 @@ else:
 dna1 = dnap.parse_string(s1, args.worm, args.nicked)
 dna2 = dnap.parse_string(s2, args.worm, args.nicked)
 
+if args.nicked:
+    nd = NickedDistribution()
+    dna1.nd = nd
+    dna2.nd = nd
+
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 
 for y_d in y_ds:
@@ -36,7 +42,7 @@ for y_d in y_ds:
     file_path = path + "/long.txt"
     f = open(file_path, 'w')
     i = 0
-    while i < 2:
+    while i < 1000000:
         dna1.number_nicked = 0
         dna1.simulate_structure()
         print(dna1.number_nicked)
@@ -51,7 +57,7 @@ for y_d in y_ds:
     f = open(file_path, 'w')
     i = 0
     #print("Simulating Short Structure")
-    while i < 2:
+    while i < 1000000:
         dna2.number_nicked = 0
         dna2.simulate_structure()
         print(dna2.number_nicked)

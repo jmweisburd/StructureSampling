@@ -14,8 +14,9 @@ class DNA_Structure:
         self.worm = wormlike
         self.nicked = nicked
         self.number_nicked = 0
-        if nicked:
-            self.nd = NickedDistribution()
+        self.nd = None
+        #if nicked:
+            #self.nd = NickedDistribution()
 
     #Moves the toe-hold of the tether along the y-axis
     #y_d: distance (in nm) to move the toe-hold
@@ -42,34 +43,57 @@ class DNA_Structure:
 
     #Simulates the structure by generating random vectors and adding them together
     def simulate_structure(self):
-        next_domain = None
         for i in range(0, len(self.joint_list)-1):
             j = self.joint_list[i]
             if j.id == 0:
                 j.cart_coords = (self.tether_location)
-                next_domain = self.get_domain_by_id(j.up_domain)
-                radial = next_domain.get_dna_length_nm(self.worm)
-                new_vector = random_vector_pz(radial)
-                next_joint = self.get_joint_by_id(next_domain.up_joint)
-                next_joint.cart_coords = add_3d_vectors(j.cart_coords, new_vector)
+            current_vector = j.cart_coords
+            next_domain = self.get_domain_by_id(j.up_domain)
+            radial = next_domain.get_dna_length_nm(self.worm)
+
+            if j.down_domain == -1:
+                last_domain_DS = False
             else:
-                current_vector = j.cart_coords
-                next_domain = self.get_domain_by_id(j.up_domain)
-                radial = next_domain.get_dna_length_nm(self.worm)
-                last_domain = self.get_domain_by_id(j.down_domain)
-                both_ds = (next_domain.stranded == "D") and (last_domain.stranded == "D")
-                if both_ds:
-                    self.number_nicked += 1
-                new_vector = self.vector_generator(radial,both_ds)
-                while (current_vector.z + new_vector.z) < 0:
-                    new_vector = self.vector_generator(radial,both_ds)
-                next_joint = self.get_joint_by_id(next_domain.up_joint)
-                next_joint.cart_coords = add_3d_vectors(current_vector, new_vector)
+                last_domain_DS = (self.get_domain_by_id(j.down_domain).stranded) == "D"
+            both_DS = last_domain_DS and (next_domain.stranded == "D")
+
+            new_vector = self.vector_generator(radial, both_DS)
+            while (current_vector.z + new_vector.z) < 0:
+                new_vector = self.vector_generator(radial, both_DS)
+
+            next_joint = self.get_joint_by_id(next_domain.up_joint)
+            next_joint.cart_coords = add_3d_vectors(current_vector, new_vector)
+
+    #def simulate_structure(self):
+        #next_domain = None
+        #for i in range(0, len(self.joint_list)-1):
+            #j = self.joint_list[i]
+            #if j.id == 0:
+                #j.cart_coords = (self.tether_location)
+                #next_domain = self.get_domain_by_id(j.up_domain)
+                #radial = next_domain.get_dna_length_nm(self.worm)
+                #new_vector = random_vector_pz(radial)
+                #next_joint = self.get_joint_by_id(next_domain.up_joint)
+                #next_joint.cart_coords = add_3d_vectors(j.cart_coords, new_vector)
+            #else:
+                #current_vector = j.cart_coords
+                #next_domain = self.get_domain_by_id(j.up_domain)
+                #radial = next_domain.get_dna_length_nm(self.worm)
+                #last_domain = self.get_domain_by_id(j.down_domain)
+                #both_ds = (next_domain.stranded == "D") and (last_domain.stranded == "D")
+                #if both_ds:
+                #    self.number_nicked += 1
+                #new_vector = self.vector_generator(radial,both_ds)
+                #while (current_vector.z + new_vector.z) < 0:
+                #    new_vector = self.vector_generator(radial,both_ds)
+                #next_joint = self.get_joint_by_id(next_domain.up_joint)
+                #next_joint.cart_coords = add_3d_vectors(current_vector, new_vector)
 
     def vector_generator(self, radial, both_ds):
         if self.nicked and both_ds:
+            self.number_nicked += 1
             ang = self.nd.generate_rand_from_pdf()
-            new_vector = random_vector_nicked_dist(radial, ang)
+            new_vector = random_vector_nicked(radial, ang)
         else:
             new_vector = random_vector(radial)
         return new_vector

@@ -1,4 +1,5 @@
 import math
+import numpy as np
 import random as rand
 import constants
 
@@ -13,38 +14,44 @@ def cartesian_to_polar(x,y,z):
         azim = math.atan2(y/x)
         return PolarCoords(radial, polar, azim)
 
-def polar_to_cartesian(r, polar, azim):
-    x = r*math.sin(polar)*math.cos(azim)
-    y = r*math.sin(polar)*math.sin(azim)
-    z = r*math.cos(polar)
+def polar_to_cartesian(r, incl, azim):
+    x = r*math.sin(incl)*math.cos(azim)
+    y = r*math.sin(incl)*math.sin(azim)
+    z = r*math.cos(incl)
     return CartesianCoords(x,y,z)
 
 def random_vector(radial):
-    polar = 0
+    incl = 0
     azim = 0
-    while (polar==0):
-        polar = rand.uniform(0, math.pi)
+    while (incl==0):
+        r = np.random.rand()
+        incl = math.acos((2*r)-1)
     while (azim==0):
-        azim = rand.uniform(0, 2*math.pi)
-    return polar_to_cartesian(radial, polar, azim)
+        r = np.random.rand()
+        azim = 2 * math.pi * r
+    return polar_to_cartesian(radial, incl, azim)
 
-def random_vector_nicked_dist(radial, ang_in_degrees):
-    polar = math.radians(ang_in_degrees)
+def random_vector_nicked(radial, ang_in_degrees):
+    incl = math.radians(ang_in_degrees)
     azim = 0
     while (azim==0):
+        r = np.random.rand()
         azim = rand.uniform(0, 2*math.pi)
-    return polar_to_cartesian(radial, polar, azim)
+    return polar_to_cartesian(radial, incl, azim)
 
 #Generate random vector with a positive z value
-def random_vector_pz(radial):
-    polar = 0
-    azim = 0
-    while (polar == 0):
-        polar = rand.uniform(0, (math.pi/2))
-    while (azim == 0):
-        azim = rand.uniform(0,2*math.pi)
-    return polar_to_cartesian(radial, polar, azim)
-    #return polar_to_cartesian(radial, 0, azim)
+#def random_vector_pz(radial):
+    #polar = 0
+    #azim = 0
+    #while (polar == 0):
+        #r = np.random.rand()
+        #polar = math.acos((2*r)-1)
+        #polar = rand.uniform(0, (math.pi/2))
+    #while (azim == 0):
+        #r = np.random.rand()
+        #azim = 2 * math.pi * r
+        #azim = rand.uniform(0,2*math.pi)
+    #return polar_to_cartesian(radial, polar, azim)
 
 #Adds two CartesianCoords objects together and the CartesianCoords ojbect sum
 def add_3d_vectors(v1, v2):
