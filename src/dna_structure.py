@@ -13,6 +13,7 @@ class DNA_Structure:
         self.tether_location = cart_coords
         self.worm = wormlike
         self.nicked = nicked
+        self.number_nicked = 0
         if nicked:
             self.nd = NickedDistribution()
 
@@ -57,15 +58,15 @@ class DNA_Structure:
                 radial = next_domain.get_dna_length_nm(self.worm)
                 last_domain = self.get_domain_by_id(j.down_domain)
                 both_ds = (next_domain.stranded == "D") and (last_domain.stranded == "D")
-                new_vector = self.vector_generator(radial=radial,both_ds=both_ds)
+                if both_ds:
+                    self.number_nicked += 1
+                new_vector = self.vector_generator(radial,both_ds)
                 while (current_vector.z + new_vector.z) < 0:
-                    new_vector = self.vector_generator(radial=radial,both_ds=both_ds)
+                    new_vector = self.vector_generator(radial,both_ds)
                 next_joint = self.get_joint_by_id(next_domain.up_joint)
                 next_joint.cart_coords = add_3d_vectors(current_vector, new_vector)
 
-    def vector_generator(self, **kwargs):
-        radial = kwargs["radial"]
-        both_ds = kwargs["both_ds"]
+    def vector_generator(self, radial, both_ds):
         if self.nicked and both_ds:
             ang = self.nd.generate_rand_from_pdf()
             new_vector = random_vector_nicked_dist(radial, ang)

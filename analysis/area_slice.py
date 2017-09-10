@@ -9,12 +9,13 @@ from utility import inter_vol
 from coords import *
 from probability_calc import ProbabilityCalculator
 
-dist = ['uni', 'worm']
+#dist = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']
+dist = ['uni_uni', 'uni_nicked']
 #dist = ['wc']
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-worm_points = []
-uni_points = []
+uni_uni = []
+uni_nicked = []
 for d in dist:
     long_path = base + "/data/" + d + "/10.88" + "/long.txt"
     short_path = base + "/data/" + d + "/10.88" + "/short.txt"
@@ -25,24 +26,24 @@ for d in dist:
     maxs = list(reversed(maxs))
     mins.extend(maxs)
     mins.append(mins[0])
-    if d == 'wc':
-        worm_points = mins
+    if d == 'uni_nicked':
+        uni_nicked = mins
     else:
-        uni_points = mins
+        uni_uni = mins
 
-worm_points_x = list(map(lambda k: k.y, worm_points))
-worm_points_y = list(map(lambda k: k.z, worm_points))
-uni_points_x = list(map(lambda k: k.y, uni_points))
-uni_points_y = list(map(lambda k: k.z, uni_points))
+nicked_points_x = list(map(lambda k: k.y, uni_nicked))
+nicked_points_y = list(map(lambda k: k.z, uni_nicked))
+uni_points_x = list(map(lambda k: k.y, uni_uni))
+uni_points_y = list(map(lambda k: k.z, uni_uni))
 
 fig = plt.figure()
 ax =  fig.add_subplot(111)
-ax.scatter(worm_points_x, worm_points_y, c = 'r')
-worm_vol = ax.plot(worm_points_x, worm_points_y, 'r', label = 'worm-chain')
+ax.scatter(nicked_points_x, nicked_points_y, c = 'r')
+worm_vol = ax.plot(nicked_points_x, nicked_points_y, 'r', label = 'uni, nicked')
 ax.scatter(uni_points_x, uni_points_y, c = 'b')
-uni_vol = ax.plot(uni_points_x, uni_points_y, 'b', label = 'ideal-chain')
+uni_vol = ax.plot(uni_points_x, uni_points_y, 'b', label = 'uni, uni')
 handles, labels = ax.get_legend_handles_labels()
 ax.legend(handles, labels)
 ax.set_ylabel("z position (nm)")
 ax.set_xlabel("y position (nm)")
-plt.savefig("area_slice.png")
+plt.savefig("slice_long_nicked.png")

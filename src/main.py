@@ -36,8 +36,10 @@ for y_d in y_ds:
     file_path = path + "/long.txt"
     f = open(file_path, 'w')
     i = 0
-    while i < 1000000:
+    while i < 2:
+        dna1.number_nicked = 0
         dna1.simulate_structure()
+        print(dna1.number_nicked)
         cs = dna1.get_target_coords()
         f.write(str(cs)+"\n")
         i+= 1
@@ -45,12 +47,14 @@ for y_d in y_ds:
 
     file_path = path + "/short.txt"
     dna2.move_y_tether(y_d)
-    print("Moving short to " + str(y_d) + "y position")
+    #print("Moving short to " + str(y_d) + "y position")
     f = open(file_path, 'w')
     i = 0
-    print("Simulating Short Structure")
-    while i < 1000000:
+    #print("Simulating Short Structure")
+    while i < 2:
+        dna2.number_nicked = 0
         dna2.simulate_structure()
+        print(dna2.number_nicked)
         cs = dna2.get_target_coords()
         f.write(str(cs)+"\n")
         i+= 1
