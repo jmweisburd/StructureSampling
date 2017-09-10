@@ -157,6 +157,8 @@ class ProbabilityCalculator:
             key_list.append(y_slice[0])
             key_list.append(y_slice[-1])
             z_min, z_max = self.get_points(key_list)
+            print(z_min)
+            print(z_max)
             mins.append(z_min)
             maxs.append(z_max)
             curr += self.bw
