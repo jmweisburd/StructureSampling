@@ -12,7 +12,7 @@ class DNA_Structure:
         #tether_location is in cartesian coordinates (x,y,z)
         self.tether_location = cart_coords
         self.worm = wormlike
-        self.nicked = nicked
+        #self.nicked = nicked
         self.number_nicked = 0
         self.nd = None
         #if nicked:
@@ -91,7 +91,7 @@ class DNA_Structure:
 
     def vector_generator(self, radial, both_ds):
         if self.nicked and both_ds:
-            self.number_nicked += 1
+            #self.number_nicked += 1
             ang = self.nd.generate_rand_from_pdf()
             new_vector = random_vector_nicked(radial, ang)
         else:

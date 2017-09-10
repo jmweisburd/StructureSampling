@@ -43,7 +43,7 @@ for y_d in y_ds:
     f = open(file_path, 'w')
     i = 0
     while i < 1000000:
-        dna1.number_nicked = 0
+        #dna1.number_nicked = 0
         dna1.simulate_structure()
         #print(dna1.number_nicked)
         cs = dna1.get_target_coords()
@@ -58,7 +58,7 @@ for y_d in y_ds:
     i = 0
     print("Simulating Short Structure")
     while i < 1000000:
-        dna2.number_nicked = 0
+        #dna2.number_nicked = 0
         dna2.simulate_structure()
         #print(dna2.number_nicked)
         cs = dna2.get_target_coords()
