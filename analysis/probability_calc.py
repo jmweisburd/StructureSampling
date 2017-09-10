@@ -139,7 +139,7 @@ class ProbabilityCalculator:
     def calculate_colocating_volume(self):
         return (pow(self.bw,3)*self.num_colocating_bins)
 
-    def area_slice_long():
+    def area_slice_long(self):
         keys = []
         for key in self.long_map.keys():
             keys.append(key)
