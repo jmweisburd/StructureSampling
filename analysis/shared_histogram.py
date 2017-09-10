@@ -80,7 +80,7 @@ base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 distr = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']
 for b in [0.5]:
     for d in distr:
-        long_path = base + "/data/" + distr + "/10.88" + "/long.txt"
+        long_path = base + "/data/" + d + "/10.88" + "/long.txt"
         #short_path = base + "/data/" + str(yd) + "/short.txt"
         ys, zs = fill_maps(long_path, b)
         ybins, zbins = calculate_y_bins(b), calculate_z_bins(b)
