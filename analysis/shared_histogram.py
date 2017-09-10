@@ -23,7 +23,7 @@ class CartesianCoords:
         z_bool = (self.z == other.z)
         return (x_bool and y_bool and z_bool)
 
-def fill_maps(p1, p2, b):
+def fill_maps(p1, b):
     complex_map = {}
     simple_map = {}
     same_map = {}
