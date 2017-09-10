@@ -144,7 +144,7 @@ class ProbabilityCalculator:
         for key in self.long_map.keys():
             keys.append(key)
         x_slice = list(filter(lambda k: k.x == 0, keys))
-        keys = sorted(x_slice, key=lambda k: k.y)
+        x_slice = sorted(x_slice, key=lambda k: k.y)
         y_min = x_slice[0].y
         y_max = x_slice[-1].y
         curr = y_min
