@@ -38,29 +38,24 @@ def fill_maps(p1, p2, b):
             else:
                 complex_map[round_coord].append(exact_coord)
     f.close()
-    with open(p2, "r") as f:
-        for line in f:
-            x,y,z = parse_line(line)
-            exact_coord = CartesianCoords(x,y,z)
-            x_round, y_round, z_round = myround(x,2,b), myround(y,2,b), myround(z,2,b)
-            round_coord = CartesianCoords(x_round, y_round, z_round)
-            if round_coord not in simple_map.keys():
-                simple_map[round_coord] = [exact_coord]
-            else:
-                simple_map[round_coord].append(exact_coord)
+    #with open(p2, "r") as f:
+        #for line in f:
+            #x,y,z = parse_line(line)
+            #exact_coord = CartesianCoords(x,y,z)
+            #x_round, y_round, z_round = myround(x,2,b), myround(y,2,b), myround(z,2,b)
+            #round_coord = CartesianCoords(x_round, y_round, z_round)
+            #if round_coord not in simple_map.keys():
+                #simple_map[round_coord] = [exact_coord]
+            #else:
+                #simple_map[round_coord].append(exact_coord)
     f.close()
     ys = []
     zs = []
     for key in complex_map.keys():
-        if key in simple_map.keys():
-            l = complex_map[key]
-            s = simple_map[key]
-            for v in l:
-                ys.append(v.y)
-                zs.append(v.z)
-            for v in s:
-                ys.append(v.y)
-                zs.append(v.z)
+        l = complex_map[k]
+        for v in l:
+            ys.append(v.y)
+            zs.append(v.z)
     return ys, zs
 
 def calculate_y_bins(b):
@@ -82,12 +77,12 @@ def calculate_z_bins(b):
 
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-#for b in [0.1, 0.25, 0.5]:
+distr = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']
 for b in [0.5]:
-    for yd in range(0, 35, 15):
-        long_path = base + "/data/" + str(yd) + "/long.txt"
-        short_path = base + "/data/" + str(yd) + "/short.txt"
-        ys, zs = fill_maps(long_path, short_path, b)
+    for d in distr:
+        long_path = base + "/data/" + distr + "/10.88" + "/long.txt"
+        #short_path = base + "/data/" + str(yd) + "/short.txt"
+        ys, zs = fill_maps(long_path, b)
         ybins, zbins = calculate_y_bins(b), calculate_z_bins(b)
         fig, ax = plt.subplots(tight_layout=True)
         hist = ax.hist2d(ys, zs, [ybins, zbins])
