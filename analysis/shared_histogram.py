@@ -52,7 +52,7 @@ def fill_maps(p1, b):
     ys = []
     zs = []
     for key in complex_map.keys():
-        l = complex_map[k]
+        l = complex_map[key]
         for v in l:
             ys.append(v.y)
             zs.append(v.z)
@@ -64,7 +64,8 @@ def calculate_y_bins(b):
     elif b == 0.25:
         return np.arange(10.125,34.125,0.25)
     else:
-        return np.arange(-3.25,34.25, 0.5)
+        #return np.arange(-3.25,34.25, 0.5)
+        return np.arange(-15.25,15.25,0.5)
 
 def calculate_z_bins(b):
     if b == 0.1:
@@ -72,7 +73,7 @@ def calculate_z_bins(b):
     elif b == 0.25:
         return np.arange(-0.125, 10.125, 0.25)
     else:
-        return np.arange(-0.25,6.0,0.5)
+        return np.arange(-0.25,20.25,0.5)
 
 
 
@@ -90,5 +91,5 @@ for b in [0.5]:
         ax.set_ylabel('z (nm)')
         ax.set_xlabel('y (nm)')
         colorbar(hist[3])
-        plt.savefig(str(yd) + "_apart_" + str(b) + "_bins" + ".png")
+        plt.savefig(str(d) + "_hist" + ".png")
         plt.close()
