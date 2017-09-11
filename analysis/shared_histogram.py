@@ -65,7 +65,7 @@ def calculate_y_bins(b):
         return np.arange(10.125,34.125,0.25)
     else:
         #return np.arange(-3.25,34.25, 0.5)
-        return np.arange(-15.25,15.25,0.5)
+        return np.arange(5.25,15.25,0.5)
 
 def calculate_z_bins(b):
     if b == 0.1:
@@ -73,7 +73,7 @@ def calculate_z_bins(b):
     elif b == 0.25:
         return np.arange(-0.125, 10.125, 0.25)
     else:
-        return np.arange(-0.25,20.25,0.5)
+        return np.arange(-0.25,6.25,0.5)
 
 
 
@@ -82,7 +82,7 @@ base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 distr = ['uni_uni', 'worm_uni']
 for b in [0.5]:
     for d in distr:
-        long_path = base + "/data/" + d + "/10.88" + "/long.txt"
+        long_path = base + "/data/" + d + "/10.88" + "/short.txt"
         #short_path = base + "/data/" + str(yd) + "/short.txt"
         ys, zs = fill_maps(long_path, b)
         ybins, zbins = calculate_y_bins(b), calculate_z_bins(b)
