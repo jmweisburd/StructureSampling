@@ -78,7 +78,8 @@ def calculate_z_bins(b):
 
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-distr = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']
+#distr = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']
+distr = ['uni_uni', 'worm_uni']
 for b in [0.5]:
     for d in distr:
         long_path = base + "/data/" + d + "/10.88" + "/long.txt"
