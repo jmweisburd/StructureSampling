@@ -6,12 +6,13 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 import time
+from random import shuffle
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 y_ds = [10.88]
 bins = [0.5]
 #distr = ['uni_uni', 'worm_uni']
-dist = ['uni_uni']
+distr = ['uni_uni']
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 zip_list = None
@@ -28,6 +29,7 @@ for d in distr:
             pc.read_files_to_maps(long_path, short_path)
 
             zip_list = pc.plot_lc()
+            shuffle(zip_list)
 
 xs = list(map(lambda d: d[0].y, zip_list))
 ys = list(map(lambda d: d[0].z, zip_list))
