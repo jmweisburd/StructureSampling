@@ -10,7 +10,8 @@ import time
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 y_ds = [10.88]
 bins = [0.5]
-distr = ['wc']
+#distr = ['uni_uni', 'worm_uni']
+dist = ['uni_uni']
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 zip_list = None
@@ -37,4 +38,4 @@ plt.colorbar()
 plt.xlabel("Y Axis (nm)")
 plt.ylabel("Z Axis (nm)")
 plt.title("y,z position vs local concentrations")
-plt.savefig("colormap_scatter_test.png")
+plt.savefig("uu_colormap.png")
