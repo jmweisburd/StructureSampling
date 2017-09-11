@@ -16,7 +16,7 @@ def cart_coord_from_line(l):
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 start = time.time()
 y_ds = [5.44,10.88,12.0,13.5,21.76]
-types = ['uni','wc']
+types = ['uni_uni','worm_uni']
 long_uni = []
 short_uni = []
 long_wc = []
@@ -31,7 +31,7 @@ for t in types:
             for line in f:
                 cc = cart_coord_from_line(line)
                 distance = cc.distance(long_location)
-                if t == 'uni':
+                if t == 'uni_uni':
                     long_uni.append(distance)
                 else:
                     long_wc.append(distance)
@@ -40,7 +40,7 @@ for t in types:
             for line in f:
                 cc = cart_coord_from_line(line)
                 distance = cc.distance(short_location)
-                if t == 'uni':
+                if t == 'uni_uni':
                     short_uni.append(distance)
                 else:
                     short_wc.append(distance)
