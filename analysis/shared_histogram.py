@@ -4,24 +4,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from utility import *
-
-class CartesianCoords:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def __repr__(self):
-        return(str(self.x) + "," + str(self.y) + "," + str(self.z))
-
-    def __hash__(self):
-        return hash((self.x, self.y, self.z))
-
-    def __eq__(self, other):
-        x_bool = (self.x == other.x)
-        y_bool = (self.y == other.y)
-        z_bool = (self.z == other.z)
-        return (x_bool and y_bool and z_bool)
+from coords import *
 
 def fill_maps(p1, b):
     complex_map = {}
@@ -30,9 +13,9 @@ def fill_maps(p1, b):
     with open(p1, "r") as f:
         for line in f:
             x,y,z = parse_line(line)
-            exact_coord = CartesianCoords(x,y,z)
+            exact_coord = CC(x,y,z)
             x_round, y_round, z_round = myround(x,2,b), myround(y,2,b), myround(z,2,b)
-            round_coord = CartesianCoords(x_round, y_round, z_round)
+            round_coord = CC(x_round, y_round, z_round)
             if round_coord not in complex_map.keys():
                 complex_map[round_coord] = [exact_coord]
             else:
@@ -41,14 +24,14 @@ def fill_maps(p1, b):
     #with open(p2, "r") as f:
         #for line in f:
             #x,y,z = parse_line(line)
-            #exact_coord = CartesianCoords(x,y,z)
+            #exact_coord = CC(x,y,z)
             #x_round, y_round, z_round = myround(x,2,b), myround(y,2,b), myround(z,2,b)
-            #round_coord = CartesianCoords(x_round, y_round, z_round)
+            #round_coord = CC(x_round, y_round, z_round)
             #if round_coord not in simple_map.keys():
                 #simple_map[round_coord] = [exact_coord]
             #else:
                 #simple_map[round_coord].append(exact_coord)
-    f.close()
+    #f.close()
     ys = []
     zs = []
     for key in complex_map.keys():
@@ -74,8 +57,6 @@ def calculate_z_bins(b):
         return np.arange(-0.125, 10.125, 0.25)
     else:
         return np.arange(-0.25,6.25,0.5)
-
-
 
 base = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 #distr = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']

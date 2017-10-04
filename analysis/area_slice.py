@@ -5,9 +5,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
-from utility import inter_vol
-from coords import *
-from probability_calc import ProbabilityCalculator
+from data_analyst import DataAnalyst
 
 #dist = ['uni_uni', 'uni_nicked', 'worm_uni', 'worm_nicked']
 #dist = ['uni_uni', 'uni_nicked']
@@ -20,10 +18,10 @@ worm_nicked = []
 for d in dist:
     long_path = base + "/data/" + d + "/10.88" + "/long.txt"
     short_path = base + "/data/" + d + "/10.88" + "/short.txt"
-    pc = ProbabilityCalculator()
-    pc.set_bw(0.5)
-    pc.read_files_to_maps(long_path, short_path)
-    mins, maxs = pc.area_slice_long()
+    da = DataAnalyst()
+    da.set_bw(0.5)
+    da.read_files_to_maps(long_path, short_path)
+    mins, maxs = da.area_slice_colocated()
     maxs = list(reversed(maxs))
     mins.extend(maxs)
     mins.append(mins[0])

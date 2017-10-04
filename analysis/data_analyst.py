@@ -1,14 +1,17 @@
 from coords import *
 from utility import *
+from constants import *
 import math
 import numpy as np
 
-class ProbabilityCalculator:
+#This class serves as the way to interact with the data from the generation of
+#possible short/long DNA structures
+class DataAnalyst:
     def __init__(self):
         self.long_map = {}
         self.short_map = {}
         self.same_map = {}
-        self.bw = None
+        self.bw = None #bin width or thresholding distance
         self.num_colocating_bins = 0
 
     def reset_maps(self):
@@ -16,9 +19,15 @@ class ProbabilityCalculator:
         self.long_map = {}
         self.same_map = {}
 
+    #set the bin width/thresholding distance for data analysis
+    #INPUT : bin width in nm
     def set_bw(self, bw):
         self.bw = bw
 
+    #Reads the data files into maps
+    #Keys are created by rounding the data to the nearest bin width multiple
+    #For example, if x is 7.4 and the bin width is 0.5, the key will be 7.5
+    #INPUT: path1, path2 : paths to "long.txt" and "short.txt" respectively
     def read_files_to_maps(self, path1, path2):
         with open(path1, "r") as f:
             for line in f:
@@ -42,41 +51,10 @@ class ProbabilityCalculator:
                 else:
                     self.short_map[round_coord].append(exact_coord)
 
-    def calculate_threshold_probability(self):
-        total_prob = 0
-        thresh_vol_map = {}
-        for k in self.short_map.keys():
-            if k in self.long_map.keys():
-                thresh_vol_map[k] = 1
-                vs = self.short_map[k]
-                for v in vs:
-                    thresh_count = len(self.long_map[k])
-                    next_to = self.generate_surrounding_keys(k)
-                    for n in next_to:
-                        if n != k:
-                            try:
-                                l = self.long_map[n]
-                                l = list(filter(lambda x: v.distance(x) <= self.bw, l))
-                                thresh_count += len(l)
-                                thresh_vol_map[n] = 1
-                            except KeyError:
-                                pass
-                    total_prob += thresh_count
-        self.num_colocating_bins = len(thresh_vol_map.keys())
-        return total_prob/(pow(1000000,2))
-
-    def generate_surrounding_keys(self, key):
-        keys = []
-        xs = [key.x-self.bw, key.x, key.x+self.bw]
-        ys = [key.y-self.bw, key.y, key.y+self.bw]
-        zs = [key.z-self.bw, key.z, key.z+self.bw]
-        for x in xs:
-            for y in ys:
-                for z in zs:
-                    keys.append(CC(x,y,z))
-        return keys
-
-    def new_local_conc(self):
+    #Calculates the local concentrations each generated short structure sees of the long structure
+    #Sums up all the short structure points and returns an average local concentration
+    #OUTPUT: local concentration that the short structure sees of the long structure
+    def local_conc(self):
         local_concs = []
         r_vol = (4/3) * (math.pi) * (pow(self.bw, 3))
         for k in self.short_map.keys():
@@ -93,13 +71,15 @@ class ProbabilityCalculator:
                 thresh_count = len(l)
                 prob = (thresh_count) / 1000000
                 lc = prob / r_vol
-                lc = lc * 1660577881
+                lc = lc * PROB_TO_nM
                 local_concs.append(lc)
 
         total_lc = sum(local_concs)/len(local_concs)
         return total_lc
 
-    def plot_lc(self):
+    #Function used for graphing local concentration of each point of the short structure
+    #Output: list in the form [((x,y,z),local_concentration)
+    def plot_lc_short_structure(self):
         local_concs = []
         points = []
 
@@ -121,50 +101,24 @@ class ProbabilityCalculator:
                     lc = (prob / ((4/3) * math.pi * pow(self.bw, 3)))
                     lc = lc * 1660577881
                     local_concs.append(lc)
-
-        #local_concs = local_concs[:10000]
-        #points = points[:10000]
         return list(zip(points, local_concs))
 
-    def calculate_bin_probability(self):
-        total_prob = 0
-        self.num_colocating_bins = 0
-        for key in self.short_map.keys():
-            if key in self.long_map.keys():
-                self.num_colocating_bins += 1
-                total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
-        return(total_prob/(pow(1000000,2)))
-
-
-    def calculate_colocating_volume(self):
-        return (pow(self.bw,3)*self.num_colocating_bins)
-
-    def area_slice_long(self):
+    #Takes a key and generates the 27 keys in the x,y,z directions around it
+    #INPUT: key (x,y,z)
+    #RETURN: a list of keys surrounding the input key including the input key itself
+    def generate_surrounding_keys(self, key):
         keys = []
-        for key in self.long_map.keys():
-            keys.append(key)
-        x_slice = list(filter(lambda k: k.x == 0, keys))
-        x_slice = sorted(x_slice, key=lambda k: k.y)
-        y_min = x_slice[0].y
-        y_max = x_slice[-1].y
-        curr = y_min
-        mins = []
-        maxs = []
-        while curr <= y_max:
-            key_list = []
-            y_slice = list(filter(lambda k: k.y == curr, x_slice))
-            y_slice = sorted(y_slice, key=lambda k: k.z)
-            key_list.append(y_slice[0])
-            key_list.append(y_slice[-1])
-            z_min, z_max = self.get_points(key_list)
-            print(z_min)
-            print(z_max)
-            mins.append(z_min)
-            maxs.append(z_max)
-            curr += self.bw
-        return mins, maxs
+        xs = [key.x-self.bw, key.x, key.x+self.bw]
+        ys = [key.y-self.bw, key.y, key.y+self.bw]
+        zs = [key.z-self.bw, key.z, key.z+self.bw]
+        for x in xs:
+            for y in ys:
+                for z in zs:
+                    keys.append(CC(x,y,z))
+        return keys
 
-    def area_slice(self):
+    #Function for graphing an y,z slice at x=0 of the volume created by colocating points
+    def area_slice_colocated(self):
         common_keys = []
         for key in self.short_map.keys():
             if key in self.long_map.keys():
@@ -193,41 +147,55 @@ class ProbabilityCalculator:
         z_max = None
         all_points = []
         for k in key_list:
-            #short_list = self.short_map[k]
+            short_list = self.short_map[k]
             long_list = self.long_map[k]
-            #all_points.extend(short_list)
+            all_points.extend(short_list)
             all_points.extend(long_list)
         all_points = sorted(all_points, key=lambda k: k.z)
         z_max = all_points[-1]
         z_min = all_points[0]
         return z_min, z_max
 
-    def volume_estimate(self):
-        same = []
-        colocating_bins = 0
+    #Old functions to calculate probability of the two structures colocating_bins
+    #through either binning or thresholding.
+    #The new method to calculate local concentration through a combination of binning/thresholding
+    #is "local_conc"
+    '''
+    def calculate_bin_probability(self):
+        total_prob = 0
+        self.num_colocating_bins = 0
         for key in self.short_map.keys():
             if key in self.long_map.keys():
-                same.extend(self.short_map[key])
-                colocating_bins += 1
-        print("NUMBER OF SHARED BINS: " + str(colocating_bins))
-        print("VOL OF SHARED BINS: " + str(colocating_bins*pow(self.bw, 3)))
-        len_s = (len(same)-1)
-        same = sorted(same, key=lambda b: b.x)
-        x_min, x_max = same[0].x, same[len_s].x
-        same = sorted(same, key=lambda b: b.y)
-        y_min, y_max = same[0].y, same[len_s].y
-        same = sorted(same, key=lambda b: b.z)
-        z_min, z_max = same[0].z, same[len_s].z
-
-        print("X MIN: " + str(x_min))
-        print("X MAX: " + str(x_max))
-        print("Y MIN: " + str(y_min))
-        print("Y MAX: " + str(y_max))
-        print("Z MIN: " + str(z_min))
-        print("Z MAX: " + str(z_max))
-
-        x_diff = x_max - x_min
-        y_diff = y_max - y_min
-        z_diff = z_max - z_min
-
-        return (x_diff * y_diff * z_diff)
+                self.num_colocating_bins += 1
+                total_prob += (len(self.short_map[key])) * (len(self.long_map[key]))
+        return(total_prob/(pow(1000000,2)))
+    '''
+    '''
+    #Old function to calculate colocating probability through thresholding
+    def calculate_threshold_probability(self):
+        total_prob = 0
+        thresh_vol_map = {}
+        for k in self.short_map.keys():
+            if k in self.long_map.keys():
+                thresh_vol_map[k] = 1
+                vs = self.short_map[k]
+                for v in vs:
+                    thresh_count = len(self.long_map[k])
+                    next_to = self.generate_surrounding_keys(k)
+                    for n in next_to:
+                        if n != k:
+                            try:
+                                l = self.long_map[n]
+                                l = list(filter(lambda x: v.distance(x) <= self.bw, l))
+                                thresh_count += len(l)
+                                thresh_vol_map[n] = 1
+                            except KeyError:
+                                pass
+                    total_prob += thresh_count
+        self.num_colocating_bins = len(thresh_vol_map.keys())
+        return total_prob/(pow(1000000,2))
+    '''
+    '''
+    def calculate_colocating_volume(self):
+        return (pow(self.bw,3)*self.num_colocating_bins)
+    '''
